@@ -3,8 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { 
   MapPin, Phone, Clock, Send, CheckCircle, Loader2, 
-  Mail, MessageCircle, Sparkles, Building, Calendar,
-  Globe, Facebook, Twitter, Linkedin
+  Mail, MessageCircle, Sparkles, Building, Calendar
 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
