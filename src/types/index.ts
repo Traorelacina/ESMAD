@@ -87,6 +87,8 @@ export interface LoginRequest {
   password: string
 }
 
+export type LoginCredentials = LoginRequest
+
 export interface LoginResponse {
   user: User
   token: string

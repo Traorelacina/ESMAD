@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 import { User, LoginCredentials } from '@/types'
-import api from '@/lib/api'
+import api from '@/api/client'
 
 interface AuthContextType {
   user: User | null
