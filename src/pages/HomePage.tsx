@@ -136,35 +136,35 @@ function MainSlider() {
               transition={{ duration: 0.65 }}
               style={{ maxWidth: '100%', margin: '0 auto' }}
             >
-              {/* Pretitle */}
+              {/* Pretitle - Taille originale */}
               <div style={{ 
                 display: 'inline-flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
-                gap: 10, 
-                padding: '8px 20px', 
-                borderRadius: 40, 
+                gap: 8, 
+                padding: '5px 14px', 
+                borderRadius: 30, 
                 background: 'rgba(139,195,74,0.15)', 
                 border: '1px solid rgba(139,195,74,0.35)', 
                 color: '#A5D46A', 
-                fontSize: 15, 
+                fontSize: 13, 
                 fontWeight: 700, 
                 letterSpacing: '0.12em', 
                 textTransform: 'uppercase', 
-                marginBottom: 28,
+                marginBottom: 24,
                 fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
               }}>
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#8BC34A', display: 'inline-block' }} />
+                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8BC34A', display: 'inline-block' }} />
                 {slide.pretitle}
               </div>
 
-              {/* Titre en majuscules avec la même police que le pretitle */}
+              {/* Titre - Taille originale */}
               <h1 style={{ 
                 color: '#fff', 
                 fontWeight: 800, 
-                fontSize: 'clamp(44px, 7vw, 85px)', 
-                lineHeight: 1.15, 
-                marginBottom: 28, 
+                fontSize: 'clamp(38px, 6vw, 72px)', 
+                lineHeight: 1.2, 
+                marginBottom: 24, 
                 letterSpacing: '0.05em',
                 textShadow: '0 2px 10px rgba(0,0,0,0.3)',
                 fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
@@ -173,13 +173,13 @@ function MainSlider() {
                 {slide.title}
               </h1>
 
-              {/* Sous-titre */}
+              {/* Sous-titre - Taille originale */}
               <p style={{ 
-                color: 'rgba(255,255,255,0.92)', 
-                fontSize: 'clamp(17px, 2.2vw, 21px)', 
+                color: 'rgba(255,255,255,0.9)', 
+                fontSize: 'clamp(15px, 2vw, 19px)', 
                 lineHeight: 1.7, 
                 marginBottom: 0, 
-                maxWidth: 750, 
+                maxWidth: 700, 
                 margin: '0 auto',
                 textShadow: '0 1px 5px rgba(0,0,0,0.2)',
                 fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
@@ -305,21 +305,11 @@ function OffresSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
-          <span
-  style={{
-    display: 'block',
-    fontSize: 22,
-    fontWeight: 800,
-    textTransform: 'uppercase',
-    letterSpacing: '0.22em',
-    color: '#7CB342',
-    marginBottom: 18
-  }}
->
+          <span style={{ display: 'block', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 16 }}>
   Nos prestations
 </span>
-         
-          <p style={{ color: '#6B7280', fontSize: 18, maxWidth: 650, margin: '0 auto', lineHeight: 1.6 }}>
+          
+          <p style={{ color: '#6B7280', fontSize: 17, maxWidth: 600, margin: '0 auto', lineHeight: 1.6 }}>
             ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
@@ -337,7 +327,7 @@ function OffresSection() {
               onMouseLeave={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'; el.style.transform = 'translateY(0)' }}
             >
               {/* Image */}
-              <div style={{ height: 230, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
                 <img
                   src={o.image}
                   alt={o.title}
@@ -347,18 +337,18 @@ function OffresSection() {
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
                 />
                 {/* Barre couleur en bas de l'image */}
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 5, background: o.color }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: o.color }} />
               </div>
 
               {/* Contenu */}
-              <div style={{ padding: '28px 28px 34px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18 }}>
-                  <div style={{ width: 52, height: 52, borderRadius: 14, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <o.icon size={26} color={o.color} strokeWidth={1.7} />
+              <div style={{ padding: '24px 24px 30px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <o.icon size={22} color={o.color} strokeWidth={1.7} />
                   </div>
-                  <h3 style={{ fontSize: 20, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
                 </div>
-                <p style={{ fontSize: 16, color: '#6B7280', lineHeight: 1.65 }}>{o.desc}</p>
+                <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.65 }}>{o.desc}</p>
               </div>
             </motion.div>
           ))}
