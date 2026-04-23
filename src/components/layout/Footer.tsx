@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { MapPin, Phone, Clock, Shield } from 'lucide-react'
-import Logo from '@/components/ui/Logo'
+import logo from '@/assets/logo.png'
 
 const LINKS = {
   Navigation: [
     { label: 'Accueil', to: '/' },
+    { label: 'La Clinique', to: '/clinique' },
     { label: 'Nos Services', to: '/services' },
-    { label: 'Notre Équipe', to: '/medecins' },
-    { label: 'Informations Patients', to: '/patients' },
-    { label: 'La Clinique', to: '/a-propos' },
+    { label: 'Nos Médecins', to: '/medecins' },
+    { label: 'Nos Assurances', to: '/assurances' },
     { label: 'Contact', to: '/contact' },
   ],
   Services: [
@@ -33,26 +33,66 @@ export default function Footer() {
         }}
       />
 
-      <div className="max-w-[1200px] mx-auto px-7 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12 pb-12"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '64px 24px' }}>
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 48,
+          marginBottom: 48,
+          paddingBottom: 48,
+          borderBottom: '1px solid rgba(255,255,255,0.06)'
+        }} className="footer-grid">
+          
           {/* Brand */}
           <div>
-            <Logo variant="white" size="md" />
-            <p className="mt-5 text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <Link to="/" style={{ display: 'inline-block' }}>
+              <img 
+                src={logo} 
+                alt="ESMAD - Espace Médical Anador" 
+                style={{ 
+                  height: 48, 
+                  width: 'auto', 
+                  objectFit: 'contain',
+                  marginBottom: 20
+                }} 
+              />
+            </Link>
+            <p style={{ 
+              marginTop: 4, 
+              fontSize: 14, 
+              lineHeight: 1.6,
+              color: 'rgba(255,255,255,0.5)'
+            }}>
               Centre de santé agréé, dédié à fournir des soins médicaux accessibles,
               fiables et de haute qualité à Abidjan, Côte d'Ivoire.
             </p>
-            <div className="mt-3 text-xs italic" style={{ color: 'rgba(255,255,255,0.25)' }}>
+            <div style={{ 
+              marginTop: 12, 
+              fontSize: 11, 
+              fontStyle: 'italic',
+              color: 'rgba(255,255,255,0.25)'
+            }}>
               Autorisation ATT N°52/MSHP/DGS/DEPS/KL
             </div>
+            
             {/* WhatsApp link */}
             <motion.a
               href="https://wa.me/2250101819286"
               target="_blank"
-              className="inline-flex items-center gap-2 mt-5 px-4 py-2.5 rounded-lg text-white text-sm font-semibold"
-              style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)' }}
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                marginTop: 20,
+                padding: '10px 20px',
+                borderRadius: 10,
+                background: 'linear-gradient(135deg, #25D366, #128C7E)',
+                color: '#fff',
+                fontSize: 14,
+                fontWeight: 600,
+                textDecoration: 'none',
+              }}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -63,47 +103,104 @@ export default function Footer() {
             </motion.a>
           </div>
 
-          {/* Links */}
-          {Object.entries(LINKS).map(([title, links]) => (
-            <div key={title}>
-              <div className="text-xs font-bold uppercase tracking-[0.1em] mb-4"
-                style={{ color: 'rgba(255,255,255,0.3)' }}>
-                {title}
-              </div>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      to={link.to}
-                      className="text-sm transition-colors hover:text-white"
-                      style={{ color: 'rgba(255,255,255,0.55)' }}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+          {/* Links Navigation */}
+          <div>
+            <div style={{
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              marginBottom: 16,
+              color: 'rgba(255,255,255,0.3)'
+            }}>
+              Navigation
             </div>
-          ))}
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {LINKS.Navigation.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    style={{
+                      fontSize: 14,
+                      color: 'rgba(255,255,255,0.55)',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#fff' }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.55)' }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links Services */}
+          <div>
+            <div style={{
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              marginBottom: 16,
+              color: 'rgba(255,255,255,0.3)'
+            }}>
+              Services
+            </div>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {LINKS.Services.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    style={{
+                      fontSize: 14,
+                      color: 'rgba(255,255,255,0.55)',
+                      textDecoration: 'none',
+                      transition: 'color 0.2s ease',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#fff' }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = 'rgba(255,255,255,0.55)' }}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Contact */}
           <div>
-            <div className="text-xs font-bold uppercase tracking-[0.1em] mb-4"
-              style={{ color: 'rgba(255,255,255,0.3)' }}>
+            <div style={{
+              fontSize: 11,
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              marginBottom: 16,
+              color: 'rgba(255,255,255,0.3)'
+            }}>
               Coordonnées
             </div>
-            <div className="space-y-4">
-              <div className="flex gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                <MapPin size={14} className="flex-shrink-0 mt-0.5 opacity-40" />
-                <div>Abobo Anador Cocoteraie<br />(Coco Service), Abidjan<br />08 BP 270 Abidjan 08</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>
+                <MapPin size={14} style={{ flexShrink: 0, marginTop: 2, opacity: 0.4 }} />
+                <div>
+                  Abobo Anador Cocoteraie<br />
+                  (Coco Service), Abidjan<br />
+                  08 BP 270 Abidjan 08
+                </div>
               </div>
-              <div className="flex gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                <Phone size={14} className="flex-shrink-0 mt-0.5 opacity-40" />
-                <div>01 01 81 92 86<br />05 05 11 41 20</div>
+              <div style={{ display: 'flex', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>
+                <Phone size={14} style={{ flexShrink: 0, marginTop: 2, opacity: 0.4 }} />
+                <div>
+                  01 01 81 92 86<br />
+                  05 05 11 41 20
+                </div>
               </div>
-              <div className="flex gap-3 text-sm" style={{ color: 'rgba(255,255,255,0.55)' }}>
-                <Clock size={14} className="flex-shrink-0 mt-0.5 opacity-40" />
-                <div>Lun — Sam : 07h30 – 18h00<br />
+              <div style={{ display: 'flex', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>
+                <Clock size={14} style={{ flexShrink: 0, marginTop: 2, opacity: 0.4 }} />
+                <div>
+                  Lun — Sam : 07h30 – 18h00<br />
                   <span style={{ color: 'rgba(239,154,154,0.9)' }}>Urgences : 24h/24 — 7j/7</span>
                 </div>
               </div>
@@ -112,12 +209,57 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs"
-          style={{ color: 'rgba(255,255,255,0.3)' }}>
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 16,
+          fontSize: 12,
+          color: 'rgba(255,255,255,0.3)'
+        }}>
           <span>© 2026 Espace Médical Anador (ESMAD). Tous droits réservés.</span>
           <span>08 BP 270 Abidjan 08 — Côte d'Ivoire</span>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 1024px) {
+          .footer-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 32px !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 40px !important;
+            text-align: center !important;
+          }
+          
+          .footer-grid > div {
+            text-align: center !important;
+          }
+          
+          .footer-grid .flex {
+            justify-content: center !important;
+          }
+          
+          .footer-grid ul {
+            align-items: center !important;
+          }
+          
+          .footer-grid a {
+            justify-content: center !important;
+          }
+          
+          .footer-grid .gap-3,
+          .footer-grid .gap-4 {
+            justify-content: center !important;
+          }
+        }
+      `}</style>
     </footer>
   )
 }
