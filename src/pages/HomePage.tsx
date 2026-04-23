@@ -7,6 +7,7 @@ import {
   Stethoscope, Baby, FlaskConical, Search, Home as HomeIcon, HeartPulse,
   Clock, Users, Shield, Award,
 } from 'lucide-react'
+import imageEsma from '@/assets/image_esma.jpeg'
 
 // ─── STYLES GLOBAUX ───────────────────────────────────────────────────────────
 ;(function injectStyles() {
@@ -36,7 +37,7 @@ import {
 // ─── DONNÉES SLIDER ───────────────────────────────────────────────────────────
 const SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1600&q=80',
+    image: imageEsma,
     pretitle: 'Centre Medical Agree — Abidjan',
     title: 'Espace Medical Anador',
     subtitle: "Un etablissement de sante moderne au service de votre bien-etre depuis 2010, au coeur d'Abobo.",
@@ -93,7 +94,7 @@ function MainSlider() {
           transition={{ duration: 1, ease: 'easeInOut' }}
           style={{
             position: 'absolute', inset: 0,
-            backgroundImage: `url(${slide.image})`,
+            backgroundImage: typeof slide.image === 'string' ? `url(${slide.image})` : `url(${slide.image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}

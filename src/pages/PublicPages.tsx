@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { CheckCircle, Heart, Users, Shield, Clock } from 'lucide-react'
 import Hero from '@/components/home/Hero'
+import imageEsma from '@/assets/image_esma.jpeg'
 
 // ─── IMAGES PER PAGE ──────────────────────────────────────────────────────────
 const IMAGES = {
@@ -45,7 +46,7 @@ export function CliniqueePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="clinique-grid">
 
-            {/* Image */}
+            {/* Image avec l'image réelle */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -53,8 +54,8 @@ export function CliniqueePage() {
               style={{ borderRadius: 20, overflow: 'hidden', boxShadow: '0 8px 40px rgba(0,0,0,0.12)' }}
             >
               <img
-                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80"
-                alt="Clinique ESMAD"
+                src={imageEsma}
+                alt="ESMAD - Espace Médical Anador"
                 style={{ width: '100%', height: 420, objectFit: 'cover', display: 'block' }}
               />
             </motion.div>
@@ -66,7 +67,7 @@ export function CliniqueePage() {
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <span style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 12 }}>
-                Notre histoire
+                
               </span>
               <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 800, color: '#0A1628', marginBottom: 24, lineHeight: 1.2 }}>
                 NOTRE HISTOIRE
