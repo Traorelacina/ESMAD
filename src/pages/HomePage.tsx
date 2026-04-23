@@ -141,20 +141,20 @@ function MainSlider() {
                 display: 'inline-flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
-                gap: 8, 
-                padding: '5px 14px', 
-                borderRadius: 30, 
+                gap: 10, 
+                padding: '8px 20px', 
+                borderRadius: 40, 
                 background: 'rgba(139,195,74,0.15)', 
                 border: '1px solid rgba(139,195,74,0.35)', 
                 color: '#A5D46A', 
-                fontSize: 13, 
+                fontSize: 15, 
                 fontWeight: 700, 
                 letterSpacing: '0.12em', 
                 textTransform: 'uppercase', 
-                marginBottom: 24,
+                marginBottom: 28,
                 fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
               }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8BC34A', display: 'inline-block' }} />
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#8BC34A', display: 'inline-block' }} />
                 {slide.pretitle}
               </div>
 
@@ -162,9 +162,9 @@ function MainSlider() {
               <h1 style={{ 
                 color: '#fff', 
                 fontWeight: 800, 
-                fontSize: 'clamp(38px, 6vw, 72px)', 
-                lineHeight: 1.2, 
-                marginBottom: 24, 
+                fontSize: 'clamp(44px, 7vw, 85px)', 
+                lineHeight: 1.15, 
+                marginBottom: 28, 
                 letterSpacing: '0.05em',
                 textShadow: '0 2px 10px rgba(0,0,0,0.3)',
                 fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
@@ -175,11 +175,11 @@ function MainSlider() {
 
               {/* Sous-titre */}
               <p style={{ 
-                color: 'rgba(255,255,255,0.9)', 
-                fontSize: 'clamp(15px, 2vw, 19px)', 
+                color: 'rgba(255,255,255,0.92)', 
+                fontSize: 'clamp(17px, 2.2vw, 21px)', 
                 lineHeight: 1.7, 
                 marginBottom: 0, 
-                maxWidth: 700, 
+                maxWidth: 750, 
                 margin: '0 auto',
                 textShadow: '0 1px 5px rgba(0,0,0,0.2)',
                 fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
@@ -236,14 +236,14 @@ function StatsSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              style={{ padding: '26px 20px', display: 'flex', alignItems: 'center', gap: 16, borderRight: i < 3 ? '1px solid #E8EDF5' : 'none' }}
+              style={{ padding: '30px 20px', display: 'flex', alignItems: 'center', gap: 18, borderRight: i < 3 ? '1px solid #E8EDF5' : 'none' }}
             >
-              <div style={{ width: 52, height: 52, borderRadius: 14, background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 0 0 1px ${s.color}22` }}>
-                <s.icon size={24} color={s.color} strokeWidth={1.7} />
+              <div style={{ width: 60, height: 60, borderRadius: 16, background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 0 0 1px ${s.color}22` }}>
+                <s.icon size={28} color={s.color} strokeWidth={1.7} />
               </div>
               <div>
-                <div style={{ fontSize: 'clamp(22px,2.5vw,30px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.1 }}>{s.value}</div>
-                <div style={{ fontSize: 15, color: '#6B7280', marginTop: 3, fontWeight: 500 }}>{s.label}</div>
+                <div style={{ fontSize: 'clamp(26px, 3vw, 34px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.1 }}>{s.value}</div>
+                <div style={{ fontSize: 16, color: '#6B7280', marginTop: 4, fontWeight: 600 }}>{s.label}</div>
               </div>
             </motion.div>
           ))}
@@ -296,28 +296,36 @@ const OFFRES = [
 function OffresSection() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.06 })
   return (
-    <section ref={ref} style={{ background: '#fff', padding: '84px 0' }}>
+    <section ref={ref} style={{ background: '#fff', padding: '90px 0' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
         {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 56 }}
+          style={{ textAlign: 'center', marginBottom: 64 }}
         >
-          <span style={{ display: 'block', fontSize: 14, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 12 }}>
-            Nos prestations
-          </span>
-          <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.2, marginBottom: 16 }}>
-            Offres de soins
-          </h2>
-          <p style={{ color: '#6B7280', fontSize: 17, maxWidth: 600, margin: '0 auto', lineHeight: 1.6 }}>
+          <span
+  style={{
+    display: 'block',
+    fontSize: 22,
+    fontWeight: 800,
+    textTransform: 'uppercase',
+    letterSpacing: '0.22em',
+    color: '#7CB342',
+    marginBottom: 18
+  }}
+>
+  Nos prestations
+</span>
+         
+          <p style={{ color: '#6B7280', fontSize: 18, maxWidth: 650, margin: '0 auto', lineHeight: 1.6 }}>
             ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
 
         {/* Grille 3 colonnes */}
-        <div className="esmad-offres-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24 }}>
+        <div className="esmad-offres-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 28 }}>
           {OFFRES.map((o, i) => (
             <motion.div
               key={o.title}
@@ -329,7 +337,7 @@ function OffresSection() {
               onMouseLeave={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'; el.style.transform = 'translateY(0)' }}
             >
               {/* Image */}
-              <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ height: 230, overflow: 'hidden', position: 'relative' }}>
                 <img
                   src={o.image}
                   alt={o.title}
@@ -339,18 +347,18 @@ function OffresSection() {
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
                 />
                 {/* Barre couleur en bas de l'image */}
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: o.color }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 5, background: o.color }} />
               </div>
 
               {/* Contenu */}
-              <div style={{ padding: '24px 24px 30px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <o.icon size={22} color={o.color} strokeWidth={1.7} />
+              <div style={{ padding: '28px 28px 34px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 18 }}>
+                  <div style={{ width: 52, height: 52, borderRadius: 14, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <o.icon size={26} color={o.color} strokeWidth={1.7} />
                   </div>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
+                  <h3 style={{ fontSize: 20, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
                 </div>
-                <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.65 }}>{o.desc}</p>
+                <p style={{ fontSize: 16, color: '#6B7280', lineHeight: 1.65 }}>{o.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -371,40 +379,40 @@ function AssurancesStrip() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 })
 
   return (
-    <section ref={ref} style={{ background: '#F8FAFD', padding: '72px 0', borderTop: '1px solid #E8EDF5' }}>
+    <section ref={ref} style={{ background: '#F8FAFD', padding: '80px 0', borderTop: '1px solid #E8EDF5' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
         {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 40 }}
+          style={{ textAlign: 'center', marginBottom: 48 }}
         >
-          <span style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 10 }}>
+          <span style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 12 }}>
             Couverture santé
           </span>
-          <h2 style={{ fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: 800, color: '#0A1628', marginBottom: 10 }}>
+          <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 800, color: '#0A1628', marginBottom: 12 }}>
             Nos assurances partenaires
           </h2>
-          <p style={{ color: '#6B7280', fontSize: 15, maxWidth: 460, margin: '0 auto' }}>
+          <p style={{ color: '#6B7280', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
             ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles de Côte d'Ivoire.
           </p>
         </motion.div>
 
         {/* Ticker auto-scroll */}
-        <div style={{ overflow: 'hidden', position: 'relative', marginBottom: 32 }}>
+        <div style={{ overflow: 'hidden', position: 'relative', marginBottom: 36 }}>
           {/* Fondu bords */}
           <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 72, background: 'linear-gradient(to right, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 72, background: 'linear-gradient(to left, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
 
           <div
             className="esmad-ticker"
-            style={{ display: 'flex', gap: 16, width: 'max-content', padding: '8px 0' }}
+            style={{ display: 'flex', gap: 18, width: 'max-content', padding: '10px 0' }}
           >
             {[...ASSURANCES_NAMES, ...ASSURANCES_NAMES].map((name, i) => (
               <div
                 key={i}
-                style={{ padding: '13px 22px', borderRadius: 10, background: '#fff', border: '1px solid #E5E7EB', fontSize: 14, fontWeight: 600, color: '#374151', whiteSpace: 'nowrap', flexShrink: 0, boxShadow: '0 1px 6px rgba(0,0,0,0.04)' }}
+                style={{ padding: '14px 24px', borderRadius: 12, background: '#fff', border: '1px solid #E5E7EB', fontSize: 15, fontWeight: 600, color: '#374151', whiteSpace: 'nowrap', flexShrink: 0, boxShadow: '0 1px 6px rgba(0,0,0,0.04)' }}
               >
                 {name}
               </div>
@@ -416,7 +424,7 @@ function AssurancesStrip() {
         <div style={{ textAlign: 'center' }}>
           <Link
             to="/assurances"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 30px', borderRadius: 10, fontSize: 14, fontWeight: 700, color: '#1565C0', border: '1.5px solid #1565C0', textDecoration: 'none', background: '#fff', transition: 'all 0.2s ease' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 36px', borderRadius: 12, fontSize: 15, fontWeight: 700, color: '#1565C0', border: '2px solid #1565C0', textDecoration: 'none', background: '#fff', transition: 'all 0.2s ease' }}
             onMouseEnter={(e) => { e.currentTarget.style.background = '#EFF6FF' }}
             onMouseLeave={(e) => { e.currentTarget.style.background = '#fff' }}
           >
