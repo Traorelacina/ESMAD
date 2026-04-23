@@ -46,7 +46,6 @@ export default function TopBar() {
             </div>
             <div className="phone-labels" style={{ display: 'flex', gap: 20, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>
               <span>Urgent 24h/7j</span>
-              <span>Accueil</span>
             </div>
           </div>
         </div>
