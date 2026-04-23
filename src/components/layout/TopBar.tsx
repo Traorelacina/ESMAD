@@ -1,193 +1,123 @@
 // src/components/layout/TopBar.tsx
 import React from 'react'
-import { Phone, MapPin } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { Phone, MapPin, AlertCircle } from 'lucide-react'
 
 export default function TopBar() {
   return (
     <div
-      style={{
-        background: '#0A1628',
-        borderBottom: '1px solid rgba(255,255,255,0.07)',
-        width: '100%',
-      }}
+      className="relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #B71C1C 0%, #C62828 50%, #D32F2F 100%)' }}
     >
-      <div
+      {/* Animated shimmer */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
         style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '0 24px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          height: 52,
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.06) 50%, transparent 100%)',
+          backgroundSize: '200% 100%',
         }}
-        className="topbar-container"
-      >
-        {/* GAUCHE */}
-        <div className="topbar-left">
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'rgba(255,255,255,0.6)' }}>
-            <MapPin size={16} color="#8BC34A" strokeWidth={2} />
-            <span className="address-full">Abobo Anador cocoteraie, Abidjan</span>
-            <span className="address-short">Abobo Anador, Abidjan</span>
-          </div>
-          <span className="separator" style={{ color: 'rgba(255,255,255,0.2)', fontSize: 16 }}>|</span>
-          <span className="agrement" style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>
-            Agrement ATT N°52/MSHP/DGS/DEPS/KL
-          </span>
-        </div>
+        animate={{ backgroundPosition: ['-200% 0', '200% 0'] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+      />
 
-        {/* DROITE */}
-        <div className="topbar-right">
-          <Phone size={16} color="#8BC34A" strokeWidth={2} />
-          <div style={{ lineHeight: 1.4 }}>
-            <div style={{ color: 'rgba(255,255,255,0.9)', fontWeight: 700, letterSpacing: '0.3px' }}>
-              <span className="phone-full">05 05 11 41 20 / 01 01 81 92 86</span>
-              <span className="phone-short">05 05 11 41 20</span>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '12px 24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+          
+          {/* GAUCHE - Adresse et agrément */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'rgba(255,255,255,0.85)' }}>
+              <MapPin size={14} color="#fff" strokeWidth={2} />
+              <span className="address-full" style={{ fontSize: 12 }}>Abobo Anador Cocoteraie, Abidjan</span>
+              <span className="address-short" style={{ fontSize: 11 }}>Abobo Anador, Abidjan</span>
             </div>
-            <div className="phone-labels" style={{ display: 'flex', gap: 20, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>
-              <span>Urgent 24h/7j</span>
+            <span style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12 }}>|</span>
+            <span style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 500, fontSize: 11 }}>
+              Agrément ATT N°52/MSHP/DGS/DEPS/KL
+            </span>
+          </div>
+
+          {/* DROITE - Numéros avec style urgence */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <motion.div
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.15)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+                animate={{ scale: [1, 1.1, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <AlertCircle size={16} style={{ color: '#fff' }} />
+              </motion.div>
+              <div style={{ color: '#fff' }}>
+                <div style={{ fontWeight: 'bold', fontSize: 13 }}>Service d'urgences médicales</div>
+                <div style={{ fontSize: 10, opacity: 0.85 }}>Équipe disponible 24h/24 — 7j/7</div>
+              </div>
             </div>
+
+            {[
+              { num: '01 01 81 92 86', label: 'Urgences' },
+              { num: '05 05 11 41 20', label: 'Accueil' },
+            ].map((item) => (
+              <motion.a
+                key={item.num}
+                href={`tel:+225${item.num.replace(/\s/g, '')}`}
+                style={{ textAlign: 'center', color: '#fff', textDecoration: 'none' }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <div style={{ fontWeight: 'bold', fontSize: 16 }}>{item.num}</div>
+                <div style={{ fontSize: 9, opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.5px' }}>{item.label}</div>
+              </motion.a>
+            ))}
+
+            <motion.a
+              href="tel:0101819286"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                border: '2px solid rgba(255,255,255,0.5)',
+                color: '#fff',
+                padding: '8px 16px',
+                borderRadius: 10,
+                fontSize: 12,
+                fontWeight: 600,
+                textDecoration: 'none',
+                background: 'transparent',
+              }}
+              whileHover={{ scale: 1.04, background: 'rgba(255,255,255,0.1)' }}
+              whileTap={{ scale: 0.97 }}
+            >
+              <Phone size={14} />
+              Appeler
+            </motion.a>
           </div>
         </div>
       </div>
 
       <style>{`
-        .topbar-left {
-          display: flex;
-          align-items: center;
-          gap: 24;
-        }
-
-        .topbar-left > div {
-          display: flex;
-          align-items: center;
-          gap: 10;
-          color: rgba(255,255,255,0.6);
-        }
-
-        .topbar-right {
-          display: flex;
-          align-items: center;
-          gap: 12;
-        }
-
-        .topbar-right > div {
-          line-height: 1.4;
-        }
-
-        .address-short,
-        .phone-short {
-          display: none;
-        }
-
-        .phone-labels {
-          display: flex;
-        }
-
-        /* Tablette */
-        @media (min-width: 768px) and (max-width: 1023px) {
-          .topbar-container {
-            padding: 0 16px !important;
-          }
-          
-          .topbar-left {
-            gap: 12 !important;
-          }
-          
-          .topbar-left > div {
-            font-size: 12px !important;
-          }
-          
-          .separator {
-            font-size: 14px !important;
-          }
-          
-          .agrement {
-            font-size: 11px !important;
-          }
-          
-          .topbar-right {
-            gap: 8 !important;
-          }
-          
-          .topbar-right > div > div:first-child {
-            font-size: 13px !important;
-          }
-          
-          .phone-labels {
-            gap: 12 !important;
-            font-size: 11px !important;
-          }
-        }
-
         /* Mobile */
-        @media (max-width: 767px) {
-          .topbar-container {
-            padding: 10px 16px !important;
-            flex-direction: column !important;
-            height: auto !important;
-            gap: 8 !important;
-          }
-          
-          .topbar-left {
-            width: 100% !important;
-            justify-content: space-between !important;
-            gap: 8 !important;
-          }
-          
-          .topbar-left > div {
-            font-size: 11px !important;
-          }
-          
+        @media (max-width: 768px) {
           .address-full {
             display: none !important;
           }
-          
           .address-short {
             display: inline !important;
           }
-          
-          .separator {
-            display: none !important;
-          }
-          
-          .agrement {
-            font-size: 10px !important;
-          }
-          
-          .topbar-right {
-            width: 100% !important;
-            justify-content: center !important;
-            gap: 8 !important;
-          }
-          
-          .phone-full {
-            display: none !important;
-          }
-          
-          .phone-short {
-            display: inline !important;
-            font-size: 14px !important;
-          }
-          
-          .phone-labels {
-            justify-content: center !important;
-            gap: 16 !important;
-            font-size: 10px !important;
-            margin-top: 4px !important;
-          }
         }
 
-        /* Tres petits mobiles */
-        @media (max-width: 480px) {
-          .topbar-left {
-            flex-direction: column !important;
-            text-align: center !important;
-            gap: 4 !important;
+        @media (min-width: 769px) {
+          .address-full {
+            display: inline !important;
           }
-          
-          .agrement {
-            font-size: 9px !important;
+          .address-short {
+            display: none !important;
           }
         }
       `}</style>
