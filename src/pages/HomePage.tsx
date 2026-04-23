@@ -9,6 +9,14 @@ import {
 } from 'lucide-react'
 import imageEsma from '@/assets/image_esma.jpeg'
 
+// Imports des images pour les offres
+import consultationImg from '@/assets/Consultationgénérale.jpeg'
+import hospitalisationImg from '@/assets/Hospitalisation.jpeg'
+import laboratoireImg from '@/assets/Laboratoire.jpeg'
+import echographieImg from '@/assets/Echo.jpeg'
+import materniteImg from '@/assets/maternité.jpeg'
+import urgencesImg from '@/assets/urgence.jpeg'
+
 // ─── STYLES GLOBAUX ───────────────────────────────────────────────────────────
 ;(function injectStyles() {
   if (document.getElementById('esmad-home-styles')) return
@@ -235,7 +243,7 @@ function StatsSection() {
               </div>
               <div>
                 <div style={{ fontSize: 'clamp(22px,2.5vw,30px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.1 }}>{s.value}</div>
-                <div style={{ fontSize: 13, color: '#6B7280', marginTop: 3 }}>{s.label}</div>
+                <div style={{ fontSize: 15, color: '#6B7280', marginTop: 3, fontWeight: 500 }}>{s.label}</div>
               </div>
             </motion.div>
           ))}
@@ -249,37 +257,37 @@ function StatsSection() {
 const OFFRES = [
   {
     icon: Stethoscope, color: '#2563EB', bg: '#EFF6FF',
-    image: 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&q=80',
+    image: consultationImg,
     title: 'Consultation Médicale',
     desc: 'Consultations générales et spécialisées assurées par des professionnels qualifiés pour un diagnostic et un suivi de qualité.',
   },
   {
     icon: HomeIcon, color: '#16A34A', bg: '#F0FDF4',
-    image: 'https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?w=600&q=80',
+    image: hospitalisationImg,
     title: 'Hospitalisation',
     desc: 'Chambres confortables avec surveillance médicale continue et personnel soignant disponible en permanence pour votre bien-être.',
   },
   {
     icon: FlaskConical, color: '#D97706', bg: '#FFFBEB',
-    image: 'https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=600&q=80',
+    image: laboratoireImg,
     title: "Laboratoire d'Analyses",
     desc: 'Analyses biologiques complètes — hématologie, biochimie, sérologie — pour un diagnostic précis avec des résultats rapides.',
   },
   {
     icon: Search, color: '#DB2777', bg: '#FDF2F8',
-    image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80',
+    image: echographieImg,
     title: 'Échographie',
     desc: 'Imagerie médicale moderne par ultrasons pour examens abdominaux, obstétricaux et pelviens avec compte rendu immédiat.',
   },
   {
     icon: Baby, color: '#059669', bg: '#ECFDF5',
-    image: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=600&q=80',
+    image: materniteImg,
     title: 'Maternité',
     desc: 'Suivi prénatal, accouchement et soins postnataux assurés par une équipe de sages-femmes et gynécologues expérimentés.',
   },
   {
     icon: HeartPulse, color: '#DC2626', bg: '#FEF2F2',
-    image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=600&q=80',
+    image: urgencesImg,
     title: 'Urgences 24h / 7j',
     desc: 'Équipe médicale disponible à toute heure pour les situations urgentes. Prise en charge immédiate et professionnelle.',
   },
@@ -297,13 +305,13 @@ function OffresSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 56 }}
         >
-          <span style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 12 }}>
+          <span style={{ display: 'block', fontSize: 14, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 12 }}>
             Nos prestations
           </span>
-          <h2 style={{ fontSize: 'clamp(26px,4vw,44px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.15, marginBottom: 14 }}>
+          <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.2, marginBottom: 16 }}>
             Offres de soins
           </h2>
-          <p style={{ color: '#6B7280', fontSize: 16, maxWidth: 520, margin: '0 auto', lineHeight: 1.7 }}>
+          <p style={{ color: '#6B7280', fontSize: 17, maxWidth: 600, margin: '0 auto', lineHeight: 1.6 }}>
             ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
@@ -316,12 +324,12 @@ function OffresSection() {
               initial={{ opacity: 0, y: 36 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.09, duration: 0.55 }}
-              style={{ borderRadius: 16, overflow: 'hidden', background: '#fff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)', border: '1px solid #F0F4F8', transition: 'box-shadow 0.25s ease, transform 0.25s ease' }}
+              style={{ borderRadius: 20, overflow: 'hidden', background: '#fff', boxShadow: '0 2px 16px rgba(0,0,0,0.06)', border: '1px solid #F0F4F8', transition: 'box-shadow 0.25s ease, transform 0.25s ease' }}
               onMouseEnter={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 8px 32px rgba(0,0,0,0.11)'; el.style.transform = 'translateY(-4px)' }}
               onMouseLeave={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'; el.style.transform = 'translateY(0)' }}
             >
               {/* Image */}
-              <div style={{ height: 190, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
                 <img
                   src={o.image}
                   alt={o.title}
@@ -331,18 +339,18 @@ function OffresSection() {
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
                 />
                 {/* Barre couleur en bas de l'image */}
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 3, background: o.color }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: o.color }} />
               </div>
 
               {/* Contenu */}
-              <div style={{ padding: '20px 22px 26px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <o.icon size={19} color={o.color} strokeWidth={1.7} />
+              <div style={{ padding: '24px 24px 30px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <o.icon size={22} color={o.color} strokeWidth={1.7} />
                   </div>
-                  <h3 style={{ fontSize: 15.5, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
                 </div>
-                <p style={{ fontSize: 13.5, color: '#6B7280', lineHeight: 1.75 }}>{o.desc}</p>
+                <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.65 }}>{o.desc}</p>
               </div>
             </motion.div>
           ))}
