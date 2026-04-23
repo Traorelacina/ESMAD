@@ -1,4 +1,3 @@
-// src/pages/HomePage.tsx
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -58,17 +57,26 @@ const SLIDES = [
 
 // ─── SLIDER PRINCIPAL ─────────────────────────────────────────────────────────
 function MainSlider() {
-  const [cur, setCur]       = useState(0)
-  const timerRef            = useRef<ReturnType<typeof setInterval>>()
+  const [cur, setCur] = useState(0)
+  const timerRef = useRef<ReturnType<typeof setInterval>>(null)
 
   const go = (idx: number) => setCur((idx + SLIDES.length) % SLIDES.length)
 
   const startTimer = () => {
-    clearInterval(timerRef.current)
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+    }
     timerRef.current = setInterval(() => setCur((s) => (s + 1) % SLIDES.length), 6500)
   }
 
-  useEffect(() => { startTimer(); return () => clearInterval(timerRef.current) }, [])
+  useEffect(() => { 
+    startTimer() 
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current)
+      }
+    }
+  }, [])
 
   const slide = SLIDES[cur]
 
