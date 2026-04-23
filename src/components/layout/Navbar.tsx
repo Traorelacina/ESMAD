@@ -89,7 +89,7 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* ── MENU DESKTOP (colonne centrale, parfaitement centré par grid) ── */}
+          {/* ── MENU DESKTOP - Même taille, noir gras ── */}
           <nav className="desktop-nav" aria-label="Menu principal" style={{
             display: 'flex',
             alignItems: 'center',
@@ -106,8 +106,8 @@ export default function Navbar() {
                     padding: 'clamp(10px, 1.5vh, 14px) clamp(14px, 1.5vw, 22px)',
                     borderRadius: 10,
                     fontSize: 'clamp(14px, 1.1vw, 16px)',
-                    fontWeight: active ? 700 : 500,
-                    color: active ? '#1565C0' : '#374151',
+                    fontWeight: 700,
+                    color: active ? '#1565C0' : '#1a1a1a',
                     background: active
                       ? 'linear-gradient(135deg, #EFF6FF, #DBEAFE)'
                       : 'transparent',
@@ -129,7 +129,7 @@ export default function Navbar() {
                   onMouseLeave={e => {
                     if (!active) {
                       const el = e.currentTarget as HTMLElement
-                      el.style.color = '#374151'
+                      el.style.color = '#1a1a1a'
                       el.style.background = 'transparent'
                       el.style.border = '1px solid transparent'
                     }
@@ -226,8 +226,8 @@ export default function Navbar() {
                 padding: '16px 20px',
                 borderRadius: 12,
                 fontSize: 17,
-                fontWeight: active ? 700 : 500,
-                color: active ? '#1565C0' : '#374151',
+                fontWeight: 700,
+                color: active ? '#1565C0' : '#1a1a1a',
                 background: active
                   ? 'linear-gradient(135deg, #EFF6FF, #DBEAFE)'
                   : 'transparent',
