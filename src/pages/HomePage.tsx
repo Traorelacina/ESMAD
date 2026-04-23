@@ -84,28 +84,37 @@ function MainSlider() {
   return (
     <section style={{ position: 'relative', height: '100vh', minHeight: 580, overflow: 'hidden', background: '#060D1A' }}>
 
-      {/* Image avec fondu */}
+      {/* Image avec fondu - object-fit cover pour remplir tout l'espace */}
       <AnimatePresence mode="wait">
         <motion.div
           key={cur}
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1, ease: 'easeInOut' }}
+          transition={{ duration: 0.8, ease: 'easeInOut' }}
           style={{
             position: 'absolute', inset: 0,
-            backgroundImage: typeof slide.image === 'string' ? `url(${slide.image})` : `url(${slide.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
           }}
-        />
+        >
+          <img
+            src={typeof slide.image === 'string' ? slide.image : slide.image}
+            alt={slide.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              display: 'block',
+            }}
+          />
+        </motion.div>
       </AnimatePresence>
 
       {/* Overlay dégradé */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(6,13,26,0.75) 40%, rgba(6,13,26,0.35) 100%)', zIndex: 2 }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(6,13,26,0.6) 35%, rgba(6,13,26,0.25) 100%)', zIndex: 2 }} />
 
-      {/* Motif grille */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
+      {/* Motif grille - allégé */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.01) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
 
       {/* Contenu */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center' }}>
@@ -126,60 +135,37 @@ function MainSlider() {
               </div>
 
               {/* Titre */}
-              <h1 style={{ color: '#fff', fontWeight: 800, fontSize: 'clamp(34px, 5.5vw, 68px)', lineHeight: 1.1, marginBottom: 20, letterSpacing: '-0.02em' }}>
+              <h1 style={{ color: '#fff', fontWeight: 800, fontSize: 'clamp(34px, 5.5vw, 68px)', lineHeight: 1.1, marginBottom: 20, letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
                 {slide.title}
               </h1>
 
               {/* Sous-titre */}
-              <p style={{ color: 'rgba(255,255,255,0.68)', fontSize: 'clamp(14px, 1.8vw, 18px)', lineHeight: 1.75, marginBottom: 36, maxWidth: 520 }}>
+              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(14px, 1.8vw, 18px)', lineHeight: 1.75, marginBottom: 36, maxWidth: 520, textShadow: '0 1px 5px rgba(0,0,0,0.2)' }}>
                 {slide.subtitle}
               </p>
-
-              {/* Boutons */}
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
-                <Link to="/contact"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 32px', borderRadius: 12, fontWeight: 700, fontSize: 14, color: '#fff', background: 'linear-gradient(135deg,#1565C0,#1E88E5)', boxShadow: '0 4px 24px rgba(21,101,192,0.4)', textDecoration: 'none' }}>
-                  Prendre rendez-vous
-                </Link>
-                <Link to="/services"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 28px', borderRadius: 12, fontWeight: 600, fontSize: 14, color: 'rgba(255,255,255,0.88)', border: '1px solid rgba(255,255,255,0.22)', background: 'rgba(255,255,255,0.07)', textDecoration: 'none' }}>
-                  Nos services
-                </Link>
-              </div>
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
 
-      {/* Flèches */}
-      {(['prev','next'] as const).map((dir) => (
-        <button
-          key={dir}
-          onClick={() => { go(cur + (dir === 'next' ? 1 : -1)); startTimer() }}
-          aria-label={dir === 'prev' ? 'Precedent' : 'Suivant'}
-          style={{
-            position: 'absolute', top: '50%', transform: 'translateY(-50%)',
-            [dir === 'prev' ? 'left' : 'right']: 24, zIndex: 20,
-            width: 48, height: 48, borderRadius: '50%',
-            background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.18)',
-            color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            backdropFilter: 'blur(8px)', transition: 'background 0.2s ease',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.22)' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
-        >
-          {dir === 'prev' ? <ChevronLeft size={22} /> : <ChevronRight size={22} />}
-        </button>
-      ))}
-
       {/* Indicateurs */}
-      <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', gap: 8 }}>
+      <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', gap: 12 }}>
         {SLIDES.map((_, i) => (
           <button
             key={i}
             onClick={() => { setCur(i); startTimer() }}
             aria-label={`Slide ${i + 1}`}
-            style={{ width: i === cur ? 32 : 8, height: 8, borderRadius: 4, border: 'none', cursor: 'pointer', background: i === cur ? '#fff' : 'rgba(255,255,255,0.32)', padding: 0, transition: 'all 0.3s ease' }}
+            style={{ 
+              width: i === cur ? 40 : 10, 
+              height: 10, 
+              borderRadius: 5, 
+              border: 'none', 
+              cursor: 'pointer', 
+              background: i === cur ? '#8BC34A' : 'rgba(255,255,255,0.5)', 
+              padding: 0, 
+              transition: 'all 0.3s ease',
+              boxShadow: i === cur ? '0 0 8px rgba(139,195,74,0.5)' : 'none',
+            }}
           />
         ))}
       </div>

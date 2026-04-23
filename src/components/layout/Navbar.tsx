@@ -62,10 +62,10 @@ export default function Navbar() {
           display: 'grid',
           gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          height: 'clamp(80px, 12vh, 100px)',
+          height: 'clamp(90px, 14vh, 110px)',
         }}>
 
-          {/* ── LOGO (colonne gauche) - Sans contour ── */}
+          {/* ── LOGO (colonne gauche) - Sans contour, plus grand ── */}
           <Link
             to="/"
             style={{
@@ -81,7 +81,7 @@ export default function Navbar() {
               src={logo}
               alt="ESMAD – Espace Médical Anador"
               style={{
-                height: 'clamp(65px, 10vh, 85px)',
+                height: 'clamp(80px, 12vh, 100px)',
                 width: 'auto',
                 objectFit: 'contain',
                 display: 'block',
@@ -180,7 +180,7 @@ export default function Navbar() {
         aria-hidden={!open}
         style={{
           position: 'fixed',
-          top: 'clamp(80px, 12vh, 100px)',
+          top: 'clamp(90px, 14vh, 110px)',
           left: 0,
           right: 0,
           bottom: 0,
@@ -197,19 +197,19 @@ export default function Navbar() {
           pointerEvents: open ? 'auto' : 'none',
         }}
       >
-        {/* Logo dans le menu mobile */}
+        {/* Logo dans le menu mobile - plus grand */}
         <div style={{
           display: 'flex',
           justifyContent: 'center',
-          marginBottom: 20,
-          paddingBottom: 20,
+          marginBottom: 24,
+          paddingBottom: 24,
           borderBottom: '1px solid #F0F4F8',
         }}>
           <img
             src={logo}
             alt="ESMAD"
             style={{
-              height: 70,
+              height: 85,
               width: 'auto',
               objectFit: 'contain',
             }}
