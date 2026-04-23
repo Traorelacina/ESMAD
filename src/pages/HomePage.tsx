@@ -38,21 +38,21 @@ import imageEsma from '@/assets/image_esma.jpeg'
 const SLIDES = [
   {
     image: imageEsma,
-    pretitle: 'Centre Medical Agree — Abidjan',
-    title: 'Espace Medical Anador',
-    subtitle: "Un etablissement de sante moderne au service de votre bien-etre depuis 2010, au coeur d'Abobo.",
+    pretitle: 'Centre Médical Agréé — Abidjan',
+    title: 'ESPACE MÉDICAL ANADOR',
+    subtitle: "Un établissement de santé moderne au service de votre bien-être depuis 2010, au cœur d'Abobo.",
   },
   {
     image: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1600&q=80',
-    pretitle: 'Laboratoire medical',
-    title: 'Analyses de laboratoire',
-    subtitle: 'Des examens biologiques precis et rapides — hematologie, biochimie, serologie — pour un diagnostic fiable.',
+    pretitle: 'Laboratoire médical',
+    title: 'ANALYSES DE LABORATOIRE',
+    subtitle: 'Des examens biologiques précis et rapides — hématologie, biochimie, sérologie — pour un diagnostic fiable.',
   },
   {
     image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80',
-    pretitle: 'Notre equipe',
-    title: 'Des professionnels a votre service',
-    subtitle: 'Des medecins qualifies et bienveillants, disponibles pour vous accompagner a chaque etape de votre sante.',
+    pretitle: 'Notre équipe',
+    title: 'DES PROFESSIONNELS À VOTRE SERVICE',
+    subtitle: 'Des médecins qualifiés et bienveillants, disponibles pour vous accompagner à chaque étape de votre santé.',
   },
 ]
 
@@ -116,9 +116,9 @@ function MainSlider() {
       {/* Motif grille - allégé */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.01) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
 
-      {/* Contenu */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px', width: '100%' }}>
+      {/* Contenu - Centré */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px', width: '100%', textAlign: 'center' }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={cur}
@@ -126,21 +126,56 @@ function MainSlider() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.65 }}
-              style={{ maxWidth: 640 }}
+              style={{ maxWidth: '100%', margin: '0 auto' }}
             >
               {/* Pretitle */}
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '5px 14px', borderRadius: 30, background: 'rgba(139,195,74,0.15)', border: '1px solid rgba(139,195,74,0.35)', color: '#A5D46A', fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 20 }}>
+              <div style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: 8, 
+                padding: '5px 14px', 
+                borderRadius: 30, 
+                background: 'rgba(139,195,74,0.15)', 
+                border: '1px solid rgba(139,195,74,0.35)', 
+                color: '#A5D46A', 
+                fontSize: 13, 
+                fontWeight: 700, 
+                letterSpacing: '0.12em', 
+                textTransform: 'uppercase', 
+                marginBottom: 24,
+                fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+              }}>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8BC34A', display: 'inline-block' }} />
                 {slide.pretitle}
               </div>
 
-              {/* Titre */}
-              <h1 style={{ color: '#fff', fontWeight: 800, fontSize: 'clamp(34px, 5.5vw, 68px)', lineHeight: 1.1, marginBottom: 20, letterSpacing: '-0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>
+              {/* Titre en majuscules avec la même police que le pretitle */}
+              <h1 style={{ 
+                color: '#fff', 
+                fontWeight: 800, 
+                fontSize: 'clamp(38px, 6vw, 72px)', 
+                lineHeight: 1.2, 
+                marginBottom: 24, 
+                letterSpacing: '0.05em',
+                textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+                fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                textTransform: 'uppercase',
+              }}>
                 {slide.title}
               </h1>
 
               {/* Sous-titre */}
-              <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(14px, 1.8vw, 18px)', lineHeight: 1.75, marginBottom: 36, maxWidth: 520, textShadow: '0 1px 5px rgba(0,0,0,0.2)' }}>
+              <p style={{ 
+                color: 'rgba(255,255,255,0.9)', 
+                fontSize: 'clamp(15px, 2vw, 19px)', 
+                lineHeight: 1.7, 
+                marginBottom: 0, 
+                maxWidth: 700, 
+                margin: '0 auto',
+                textShadow: '0 1px 5px rgba(0,0,0,0.2)',
+                fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+              }}>
                 {slide.subtitle}
               </p>
             </motion.div>
@@ -175,8 +210,8 @@ function MainSlider() {
 
 // ─── STATS ────────────────────────────────────────────────────────────────────
 const STATS_DATA = [
-  { icon: Award,      value: '+10 ans',  label: "d'experience",         color: '#1565C0', bg: '#EFF6FF' },
-  { icon: Users,      value: '+50',      label: 'medecins qualifies',    color: '#7CB342', bg: '#F1F8E9' },
+  { icon: Award,      value: '+10 ans',  label: "d'expérience",         color: '#1565C0', bg: '#EFF6FF' },
+  { icon: Users,      value: '+50',      label: 'médecins qualifiés',    color: '#7CB342', bg: '#F1F8E9' },
   { icon: HeartPulse, value: '+5 000',   label: 'patients satisfaits',   color: '#D4A843', bg: '#FFF8E1' },
   { icon: Clock,      value: '24h/7j',   label: 'urgences',              color: '#C62828', bg: '#FFEBEE' },
 ]
@@ -215,38 +250,38 @@ const OFFRES = [
   {
     icon: Stethoscope, color: '#2563EB', bg: '#EFF6FF',
     image: 'https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&q=80',
-    title: 'Consultation Medicale',
-    desc: 'Consultations generales et specialisees asssurees par des professionnels qualifies pour un diagnostic et un suivi de qualite.',
+    title: 'Consultation Médicale',
+    desc: 'Consultations générales et spécialisées assurées par des professionnels qualifiés pour un diagnostic et un suivi de qualité.',
   },
   {
     icon: HomeIcon, color: '#16A34A', bg: '#F0FDF4',
     image: 'https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?w=600&q=80',
     title: 'Hospitalisation',
-    desc: 'Chambres confortables avec surveillance medicale continue et personnel soignant disponible en permanence pour votre bien-etre.',
+    desc: 'Chambres confortables avec surveillance médicale continue et personnel soignant disponible en permanence pour votre bien-être.',
   },
   {
     icon: FlaskConical, color: '#D97706', bg: '#FFFBEB',
     image: 'https://images.unsplash.com/photo-1582560475093-ba66accbc424?w=600&q=80',
     title: "Laboratoire d'Analyses",
-    desc: 'Analyses biologiques completes — hematologie, biochimie, serologie — pour un diagnostic precis avec des resultats rapides.',
+    desc: 'Analyses biologiques complètes — hématologie, biochimie, sérologie — pour un diagnostic précis avec des résultats rapides.',
   },
   {
     icon: Search, color: '#DB2777', bg: '#FDF2F8',
     image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=600&q=80',
-    title: 'Echographie',
-    desc: 'Imagerie medicale moderne par ultrasons pour examens abdominaux, obstetricaux et pelviens avec compte rendu immediat.',
+    title: 'Échographie',
+    desc: 'Imagerie médicale moderne par ultrasons pour examens abdominaux, obstétricaux et pelviens avec compte rendu immédiat.',
   },
   {
     icon: Baby, color: '#059669', bg: '#ECFDF5',
     image: 'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=600&q=80',
-    title: 'Maternite',
-    desc: 'Suivi prenatal, accouchement et soins postnataux assures par une equipe de sages-femmes et gynecologues experimentes.',
+    title: 'Maternité',
+    desc: 'Suivi prénatal, accouchement et soins postnataux assurés par une équipe de sages-femmes et gynécologues expérimentés.',
   },
   {
     icon: HeartPulse, color: '#DC2626', bg: '#FEF2F2',
     image: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=600&q=80',
     title: 'Urgences 24h / 7j',
-    desc: 'Equipe medicale disponible a toute heure pour les situations urgentes. Prise en charge immediate et professionnelle.',
+    desc: 'Équipe médicale disponible à toute heure pour les situations urgentes. Prise en charge immédiate et professionnelle.',
   },
 ]
 
@@ -255,7 +290,7 @@ function OffresSection() {
   return (
     <section ref={ref} style={{ background: '#fff', padding: '84px 0' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        {/* En-tete */}
+        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -269,7 +304,7 @@ function OffresSection() {
             Offres de soins
           </h2>
           <p style={{ color: '#6B7280', fontSize: 16, maxWidth: 520, margin: '0 auto', lineHeight: 1.7 }}>
-            ESMAD vous propose une gamme complete de services medicaux pour toute la famille.
+            ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
 
@@ -319,7 +354,7 @@ function OffresSection() {
 
 // ─── ASSURANCES PARTENAIRES ───────────────────────────────────────────────────
 const ASSURANCES_NAMES = [
-  'NSIA Assurances', 'SUNU Group', 'Allianz CI', "AXA Cote d'Ivoire",
+  'NSIA Assurances', 'SUNU Group', 'Allianz CI', "AXA Côte d'Ivoire",
   'CNPS', 'Saham Assurance', 'UAB Assurance', 'Atlantique Assurances',
   'Colina Assurances', 'GNA Assurances',
 ]
@@ -330,7 +365,7 @@ function AssurancesStrip() {
   return (
     <section ref={ref} style={{ background: '#F8FAFD', padding: '72px 0', borderTop: '1px solid #E8EDF5' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        {/* En-tete */}
+        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -338,13 +373,13 @@ function AssurancesStrip() {
           style={{ textAlign: 'center', marginBottom: 40 }}
         >
           <span style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 10 }}>
-            Couverture sante
+            Couverture santé
           </span>
           <h2 style={{ fontSize: 'clamp(24px,3.5vw,38px)', fontWeight: 800, color: '#0A1628', marginBottom: 10 }}>
             Nos assurances partenaires
           </h2>
           <p style={{ color: '#6B7280', fontSize: 15, maxWidth: 460, margin: '0 auto' }}>
-            ESMAD est conventionne avec les principales compagnies d'assurance et mutuelles de Cote d'Ivoire.
+            ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles de Côte d'Ivoire.
           </p>
         </motion.div>
 
@@ -377,7 +412,7 @@ function AssurancesStrip() {
             onMouseEnter={(e) => { e.currentTarget.style.background = '#EFF6FF' }}
             onMouseLeave={(e) => { e.currentTarget.style.background = '#fff' }}
           >
-            Consulter la liste complete
+            Consulter la liste complète
           </Link>
         </div>
       </div>
