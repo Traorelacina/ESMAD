@@ -1,59 +1,46 @@
-import { motion } from 'framer-motion'
-import { MapPin, Clock, Phone, Shield } from 'lucide-react'
+// src/components/layout/TopBar.tsx
+import { Phone, MapPin } from 'lucide-react'
 
 export default function TopBar() {
   return (
-    <div className="bg-[#070E1C] text-white py-2.5 text-sm relative overflow-hidden">
-      {/* Subtle animated line */}
-      <motion.div
-        className="absolute bottom-0 left-0 h-[1px] w-full"
+    <div
+      className="hidden md:block w-full"
+      style={{ background: '#0A1628', borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+    >
+      <div
         style={{
-          background: 'linear-gradient(90deg, transparent, rgba(124,179,66,0.5), rgba(21,101,192,0.5), transparent)',
+          maxWidth: 1280,
+          margin: '0 auto',
+          padding: '0 24px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: 42,
         }}
-        animate={{ backgroundPosition: ['0% 0%', '100% 0%'] }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
-      />
-
-      <div className="max-w-[1200px] mx-auto px-7">
-        <div className="flex items-center justify-between">
-          {/* Left */}
-          <div className="flex items-center gap-5 hide-mobile">
-            <div className="flex items-center gap-1.5 text-white/65">
-              <MapPin size={12} className="text-white/40" />
-              <span>Abobo Anador Cocoteraie, Abidjan</span>
-            </div>
-            <div className="w-px h-3 bg-white/15" />
-            <div className="flex items-center gap-1.5 text-white/65">
-              <Clock size={12} className="text-white/40" />
-              <span>Lun — Sam : 07h30 – 18h00</span>
-            </div>
-            <div className="w-px h-3 bg-white/15" />
-            <div className="flex items-center gap-1.5 text-white/40 text-xs italic">
-              <Shield size={11} />
-              <span>ATT N°52/MSHP/DGS/DEPS/KL</span>
-            </div>
+      >
+        {/* GAUCHE */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 7, color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
+            <MapPin size={12} color="#8BC34A" strokeWidth={2} />
+            <span>Abobo Anador cocoteraie, Abidjan</span>
           </div>
+          <span style={{ color: 'rgba(255,255,255,0.18)', fontSize: 14 }}>|</span>
+          <span style={{ color: 'rgba(255,255,255,0.45)', fontSize: 12 }}>
+            Agrement ATT N°52/MSHP/DGS/DEPS/KL
+          </span>
+        </div>
 
-          {/* Right */}
-          <div className="flex items-center gap-4 ml-auto">
-            <div className="flex items-center gap-1.5 text-white/70">
-              <Phone size={12} className="text-white/40" />
-              <span className="font-semibold text-white">05 05 11 41 20</span>
+        {/* DROITE */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Phone size={12} color="#8BC34A" strokeWidth={2} />
+          <div style={{ lineHeight: 1.45 }}>
+            <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12.5, fontWeight: 600 }}>
+              05 05 11 41 20 / 01 01 81 92 86
             </div>
-
-            {/* Emergency badge */}
-            <motion.a
-              href="tel:+2250101819286"
-              className="flex items-center gap-1.5 bg-brand-red text-white px-3 py-1 rounded-full text-xs font-bold"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
-              </span>
-              Urgences : 01 01 81 92 86
-            </motion.a>
+            <div style={{ display: 'flex', gap: 18, fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
+              <span>Urgent 24h/7j</span>
+              <span>Accueil</span>
+            </div>
           </div>
         </div>
       </div>

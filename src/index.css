@@ -288,3 +288,65 @@ h1, h2, h3, h4, h5 {
 @media (min-width: 769px) {
   .show-mobile { display: none !important; }
 }
+
+
+
+
+/* src/styles/responsive.css — à importer dans main.tsx ou index.css */
+
+/* Grilles responsives */
+@media (max-width: 1024px) {
+  .offres-responsive-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .assurances-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .doctors-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .clinique-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+  .services-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 40px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .offres-responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .stats-responsive-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .assurances-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .doctors-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-responsive-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .values-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .assurances-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
