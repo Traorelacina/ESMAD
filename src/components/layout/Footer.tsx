@@ -1,15 +1,14 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { MapPin, Phone, Clock, Shield } from 'lucide-react'
-import logo from '@/assets/logo.png'
+import { MapPin, Phone, Clock, Shield, Mail } from 'lucide-react'
 
 const LINKS = {
   Navigation: [
     { label: 'Accueil', to: '/' },
     { label: 'La Clinique', to: '/clinique' },
-    { label: 'Nos Services', to: '/services' },
-    { label: 'Nos Médecins', to: '/medecins' },
+    { label: 'Nos Prestations', to: '/services' },
     { label: 'Nos Assurances', to: '/assurances' },
+    { label: 'Nos Médecins', to: '/medecins' },
     { label: 'Contact', to: '/contact' },
   ],
   Services: [
@@ -23,6 +22,8 @@ const LINKS = {
 }
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer style={{ background: '#07101F' }}>
       {/* Animated top border */}
@@ -43,19 +44,24 @@ export default function Footer() {
           borderBottom: '1px solid rgba(255,255,255,0.06)'
         }} className="footer-grid">
           
-          {/* Brand */}
+          {/* Brand - Seulement ESMAD */}
           <div>
-            <Link to="/" style={{ display: 'inline-block' }}>
-              <img 
-                src={logo} 
-                alt="ESMAD - Espace Médical Anador" 
-                style={{ 
-                  height: 48, 
-                  width: 'auto', 
-                  objectFit: 'contain',
-                  marginBottom: 20
-                }} 
-              />
+            <Link to="/" style={{ 
+              display: 'inline-block', 
+              textDecoration: 'none',
+              marginBottom: 20
+            }}>
+              <h2 style={{
+                fontSize: 'clamp(28px, 4vw, 36px)',
+                fontWeight: 800,
+                letterSpacing: '0.05em',
+                color: '#fff',
+                margin: 0,
+                fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                textTransform: 'uppercase'
+              }}>
+                ESMAD
+              </h2>
             </Link>
             <p style={{ 
               marginTop: 4, 
@@ -183,11 +189,10 @@ export default function Footer() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>
-                <MapPin size={14} style={{ flexShrink: 0, marginTop: 2, opacity: 0.4 }} />
+                <Mail size={14} style={{ flexShrink: 0, marginTop: 2, opacity: 0.4 }} />
                 <div>
-                  Abobo Anador Cocoteraie<br />
-                  (Coco Service), Abidjan<br />
-                  08 BP 270 Abidjan 08
+                  contact@esmad.ci<br />
+                  infos@esmad.ci
                 </div>
               </div>
               <div style={{ display: 'flex', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>
@@ -200,15 +205,14 @@ export default function Footer() {
               <div style={{ display: 'flex', gap: 12, fontSize: 14, color: 'rgba(255,255,255,0.55)' }}>
                 <Clock size={14} style={{ flexShrink: 0, marginTop: 2, opacity: 0.4 }} />
                 <div>
-                  Lun — Sam : 07h30 – 18h00<br />
-                  <span style={{ color: 'rgba(239,154,154,0.9)' }}>Urgences : 24h/24 — 7j/7</span>
+                  <span style={{ color: 'rgba(239,154,154,0.9)', fontWeight: 600 }}>Urgences : 24h/24 — 7j/7</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom bar - Année dynamique */}
         <div style={{
           display: 'flex',
           flexWrap: 'wrap',
@@ -218,8 +222,8 @@ export default function Footer() {
           fontSize: 12,
           color: 'rgba(255,255,255,0.3)'
         }}>
-          <span>© 2026 Espace Médical Anador (ESMAD). Tous droits réservés.</span>
-          <span>08 BP 270 Abidjan 08 — Côte d'Ivoire</span>
+          <span>© {currentYear} ESMAD. Tous droits réservés.</span>
+          <span>Développé par <span style={{ color: '#7CB342', fontWeight: 600 }}>SALEM TECHNOLOGY</span></span>
         </div>
       </div>
 

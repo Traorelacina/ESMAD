@@ -377,14 +377,34 @@ function AssurancesStrip() {
         </div>
 
         <div style={{ textAlign: 'center' }}>
-          <Link
-            to="/assurances"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 36px', borderRadius: 12, fontSize: 15, fontWeight: 700, color: '#1565C0', border: '2px solid #1565C0', textDecoration: 'none', background: '#fff', transition: 'all 0.2s ease', fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#EFF6FF' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#fff' }}
-          >
-            Consulter la liste complète
-          </Link>
+         <Link
+  to="/assurances"
+  style={{ 
+    display: 'inline-flex', 
+    alignItems: 'center', 
+    gap: 8, 
+    padding: '14px 36px', 
+    borderRadius: 12, 
+    fontSize: 15, 
+    fontWeight: 700, 
+    color: '#7CB342', 
+    border: '2px solid #7CB342', 
+    textDecoration: 'none', 
+    background: '#fff', 
+    transition: 'all 0.2s ease', 
+    fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
+  }}
+  onMouseEnter={(e) => { 
+    e.currentTarget.style.background = '#F1F8E9'
+    e.currentTarget.style.color = '#7CB342'
+  }}
+  onMouseLeave={(e) => { 
+    e.currentTarget.style.background = '#fff'
+    e.currentTarget.style.color = '#7CB342'
+  }}
+>
+  Consulter la liste complète
+</Link>
         </div>
       </div>
     </section>
