@@ -348,16 +348,9 @@ export default function ContactPage() {
                 <h3 className="font-semibold text-gray-900">Horaires d'ouverture</h3>
               </div>
               <div className="space-y-2 text-sm">
+                
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Lundi - Vendredi</span>
-                  <span className="font-medium text-gray-900">07:30 - 18:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Samedi</span>
-                  <span className="font-medium text-gray-900">08:00 - 14:00</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-500">Dimanche & Jours fériés</span>
+                
                   <span className="font-medium text-red-600">Urgences uniquement</span>
                 </div>
               </div>
