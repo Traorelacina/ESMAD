@@ -1,9 +1,15 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { CheckCircle, Heart, Users, Shield, Clock } from 'lucide-react'
+import { CheckCircle, Heart, Users, Shield, Clock, Stethoscope, Baby, FlaskConical, Search, Home as HomeIcon, HeartPulse } from 'lucide-react'
 import Hero from '@/components/home/Hero'
 import imageEsma from '@/assets/image_esma.jpeg'
 import imagefontEsma from '@/assets/ImagedefondMenuLaClinique.png'
+import consultationImg from '@/assets/Consultationgénérale.jpeg'
+import hospitalisationImg from '@/assets/Hospitalisation.jpeg'
+import laboratoireImg from '@/assets/Laboratoire.jpeg'
+import echographieImg from '@/assets/Echo.jpeg'
+import materniteImg from '@/assets/maternité.jpeg'
+import urgencesImg from '@/assets/urgence.jpeg'
 
 // ─── IMAGES PER PAGE ──────────────────────────────────────────────────────────
 const IMAGES = {
@@ -211,52 +217,177 @@ export function CliniqueePage() {
 // ─────────────────────────────────────────────────────────────────────────────
 // PAGE SERVICES
 // ─────────────────────────────────────────────────────────────────────────────
-import { Home as HomeIcon, FlaskConical, Search, Baby, Stethoscope, HeartPulse, Calendar } from 'lucide-react'
-import { Link } from 'react-router-dom'
-
-const SERVICES_LIST = [
+const OFFRES = [
   {
-    icon: Stethoscope, title: 'Consultation Médicale',
-    desc: 'Consultations générales et spécialisées dispensées par des professionnels de santé qualifiés. Diagnostic, traitement et suivi médical assurés avec une attention particulière aux besoins du patient.',
-    tags: ['Médecine générale', 'Suivi chronique', 'Médecine préventive'],
-    color: '#2563EB', bgLight: '#EFF6FF',
+    icon: Stethoscope, color: '#2563EB', bg: '#EFF6FF',
+    image: consultationImg,
+    title: 'Consultation Médicale',
+    desc: 'Consultations générales et spécialisées assurées par des professionnels qualifiés pour un diagnostic et un suivi de qualité.',
   },
   {
-    icon: HomeIcon, title: 'Hospitalisation',
-    desc: "Service d'hospitalisation sécurisé et confortable pour les patients nécessitant une surveillance médicale continue. Personnel soignant disponible en permanence pour le bien-être de chaque patient.",
-    tags: ['Chambres individuelles', 'Surveillance 24h/24', 'Soins infirmiers'],
-    color: '#16A34A', bgLight: '#F0FDF4',
+    icon: HomeIcon, color: '#16A34A', bg: '#F0FDF4',
+    image: hospitalisationImg,
+    title: 'Hospitalisation',
+    desc: 'Chambres confortables avec surveillance médicale continue et personnel soignant disponible en permanence pour votre bien-être.',
   },
   {
-    icon: FlaskConical, title: "Laboratoire d'Analyses",
-    desc: "Services de laboratoire médical offrant un large éventail d'analyses biologiques — NFS, biochimie, sérologie, microbiologie — pour appuyer un diagnostic précis et un traitement efficace.",
-    tags: ['Hématologie', 'Biochimie', 'Sérologie', 'Bactériologie'],
-    color: '#D97706', bgLight: '#FFFBEB',
+    icon: FlaskConical, color: '#D97706', bg: '#FFFBEB',
+    image: laboratoireImg,
+    title: "Laboratoire d'Analyses",
+    desc: 'Analyses biologiques complètes — hématologie, biochimie, sérologie — pour un diagnostic précis avec des résultats rapides.',
   },
   {
-    icon: Search, title: 'Echographie',
-    desc: 'Imagerie médicale moderne par ultrasons pour examens abdominaux, obstétricaux et pelviens. Résultats interprétés par des praticiens spécialisés, avec compte rendu remis immédiatement.',
-    tags: ['Abdominale', 'Obstétricale', 'Pelvienne', 'Gynécologique'],
-    color: '#DB2777', bgLight: '#FDF2F8',
+    icon: Search, color: '#DB2777', bg: '#FDF2F8',
+    image: echographieImg,
+    title: 'Échographie',
+    desc: 'Imagerie médicale moderne par ultrasons pour examens abdominaux, obstétricaux et pelviens avec compte rendu immédiat.',
   },
   {
-    icon: Baby, title: 'Maternité',
-    desc: "Soins maternels complets incluant le suivi prénatal, l'accouchement physiologique ou médicalisé, et les soins postnataux. Notre équipe accompagne chaque future maman avec expertise et bienveillance.",
-    tags: ['Suivi prénatal', 'Accouchement', 'Soins postnataux', 'Planification familiale'],
-    color: '#059669', bgLight: '#ECFDF5',
+    icon: Baby, color: '#059669', bg: '#ECFDF5',
+    image: materniteImg,
+    title: 'Maternité',
+    desc: 'Suivi prénatal, accouchement et soins postnataux assurés par une équipe de sages-femmes et gynécologues expérimentés.',
   },
   {
-    icon: HeartPulse, title: 'Urgences 24h / 7j',
-    desc: "Equipe médicale disponible à toute heure pour les situations urgentes. Prise en charge immédiate et professionnelle sans rendez-vous.",
-    tags: ['Disponible 24h/24', '7j/7', 'Prise en charge immédiate'],
-    color: '#DC2626', bgLight: '#FEF2F2',
-    urgent: true,
+    icon: HeartPulse, color: '#DC2626', bg: '#FEF2F2',
+    image: urgencesImg,
+    title: 'Urgences 24h / 7j',
+    desc: 'Équipe médicale disponible à toute heure pour les situations urgentes. Prise en charge immédiate et professionnelle.',
   },
 ]
 
-export function ServicesPage() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 })
+function ServicesSection() {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.06 })
+  return (
+    <section ref={ref} style={{ background: '#fff', padding: '90px 0' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+        {/* En-tête */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: 64 }}
+        >
+          <span style={{ 
+            display: 'block', 
+            fontSize: 24, 
+            fontWeight: 800, 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.2em', 
+            color: '#7CB342', 
+            marginBottom: 16, 
+            fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
+          }}>
+            Nos prestations
+          </span>
+          <p style={{ 
+            color: '#6B7280', 
+            fontSize: 'clamp(18px, 5vw, 22px)', 
+            maxWidth: '90%', 
+            margin: '0 auto', 
+            lineHeight: 1.6,
+            whiteSpace: 'nowrap',
+            overflow: 'auto',
+            paddingBottom: '8px',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+          }}>
+            ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
+          </p>
+        </motion.div>
 
+        {/* Grille 3 colonnes */}
+        <div className="esmad-offres-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 28 }}>
+          {OFFRES.map((o, i) => (
+            <motion.div
+              key={o.title}
+              initial={{ opacity: 0, y: 36 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: i * 0.09, duration: 0.55 }}
+              style={{ 
+                borderRadius: 20, 
+                overflow: 'hidden', 
+                background: '#fff', 
+                boxShadow: '0 2px 16px rgba(0,0,0,0.06)', 
+                border: '1px solid #F0F4F8', 
+                transition: 'box-shadow 0.25s ease, transform 0.25s ease' 
+              }}
+              onMouseEnter={(e) => { 
+                const el = e.currentTarget; 
+                el.style.boxShadow = '0 8px 32px rgba(0,0,0,0.11)'; 
+                el.style.transform = 'translateY(-4px)' 
+              }}
+              onMouseLeave={(e) => { 
+                const el = e.currentTarget; 
+                el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'; 
+                el.style.transform = 'translateY(0)' 
+              }}
+            >
+              {/* Image */}
+              <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
+                <img
+                  src={o.image}
+                  alt={o.title}
+                  loading="lazy"
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover', 
+                    display: 'block', 
+                    transition: 'transform 0.5s ease' 
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.06)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+                />
+                {/* Barre couleur en bas de l'image */}
+                <div style={{ 
+                  position: 'absolute', 
+                  bottom: 0, 
+                  left: 0, 
+                  right: 0, 
+                  height: 4, 
+                  background: o.color 
+                }} />
+              </div>
+
+              {/* Contenu */}
+              <div style={{ padding: '24px 24px 30px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+                  <div style={{ 
+                    width: 44, 
+                    height: 44, 
+                    borderRadius: 12, 
+                    background: o.bg, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    flexShrink: 0 
+                  }}>
+                    <o.icon size={22} color={o.color} strokeWidth={1.7} />
+                  </div>
+                  <h3 style={{ 
+                    fontSize: 18, 
+                    fontWeight: 700, 
+                    color: '#0A1628', 
+                    lineHeight: 1.3,
+                    fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                  }}>{o.title}</h3>
+                </div>
+                <p style={{ 
+                  fontSize: 15, 
+                  color: '#6B7280', 
+                  lineHeight: 1.65,
+                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+                }}>{o.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function ServicesPage() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
       <Hero
@@ -264,75 +395,7 @@ export function ServicesPage() {
         title="Services & Spécialités"
         subtitle="ESMAD propose une gamme complète de soins médicaux pour toute la famille, assurés par des professionnels qualifiés."
       />
-
-      <section style={{ background: '#fff', padding: '80px 0' }} ref={ref}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24 }} className="services-grid">
-            {SERVICES_LIST.map((s, i) => (
-              <motion.div
-                key={s.title}
-                initial={{ opacity: 0, y: 36 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.1, duration: 0.55 }}
-                style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8EDF5', overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.05)', position: 'relative' }}
-              >
-                <div style={{ height: 4, background: s.color }} />
-                {s.urgent && (
-                  <div style={{ position: 'absolute', top: 16, right: 16, background: '#DC2626', color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 20 }}>
-                    24/7
-                  </div>
-                )}
-                <div style={{ padding: '24px 26px 26px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
-                    <div style={{ width: 52, height: 52, borderRadius: 14, background: s.bgLight, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <s.icon size={26} color={s.color} strokeWidth={1.7} />
-                    </div>
-                    <h3 style={{ 
-                      fontSize: 18, 
-                      fontWeight: 700, 
-                      color: '#0A1628',
-                      fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
-                    }}>{s.title}</h3>
-                  </div>
-                  <p style={{ 
-                    fontSize: 14, 
-                    color: '#6B7280', 
-                    lineHeight: 1.75, 
-                    marginBottom: 16,
-                    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-                  }}>{s.desc}</p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                    {s.tags.map((t) => (
-                      <span key={t} style={{ padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: s.bgLight, color: s.color }}>{t}</span>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Urgences banner */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.7, duration: 0.5 }}
-            style={{ marginTop: 40, background: 'linear-gradient(135deg, #DC2626, #B91C1C)', borderRadius: 16, padding: '32px 36px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 20 }}
-          >
-            <div style={{ color: '#fff' }}>
-              <div style={{ fontSize: 12, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(255,255,255,0.7)', marginBottom: 6 }}>
-                Urgences médicales 24h / 7j
-              </div>
-              <div style={{ fontSize: 20, fontWeight: 800 }}>Service d'urgences disponible à toute heure</div>
-              <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', marginTop: 4 }}>Notre équipe est prête à vous prendre en charge immédiatement</div>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginBottom: 4 }}>Numéro d'urgence direct</div>
-              <a href="tel:0101819286" style={{ display: 'block', fontSize: 28, fontWeight: 800, color: '#fff', textDecoration: 'none' }}>01 01 81 92 86</a>
-              <a href="tel:0505114120" style={{ display: 'block', fontSize: 18, fontWeight: 600, color: 'rgba(255,255,255,0.75)', textDecoration: 'none', marginTop: 2 }}>05 05 11 41 20</a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <ServicesSection />
     </motion.div>
   )
 }
@@ -491,23 +554,16 @@ export function AssurancesPage() {
             }}>
               NOS ASSURANCES
             </span>
-            <h2 style={{ 
-              fontSize: 'clamp(28px, 4vw, 42px)', 
-              fontWeight: 800, 
-              color: '#0A1628', 
-              marginBottom: 16,
-              fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
-            }}>
-              Partenaires assurance
-            </h2>
-            <p style={{ 
-              color: '#6B7280', 
-              fontSize: 'clamp(18px, 5vw, 22px)', 
-              lineHeight: 1.6,
-              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            }}>
-              Renseignez-vous auprès de notre accueil pour connaître les modalités de prise en charge.
-            </p>
+          
+          <p style={{ 
+  color: '#6B7280', 
+  fontSize: 'clamp(14px, 3vw, 18px)', 
+  lineHeight: 1.6,
+  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+  whiteSpace: 'nowrap',
+}}>
+  Renseignez-vous auprès de notre accueil pour connaître les modalités de prise en charge.
+</p>
           </motion.div>
 
           {/* Grid logos */}

@@ -7,7 +7,7 @@ import {
   Stethoscope, Baby, FlaskConical, Search, Home as HomeIcon, HeartPulse,
   Clock, Users, Shield, Award,
 } from 'lucide-react'
-import imageEsma from '@/assets/image_esma.jpeg'
+
 
 // Imports des images pour les offres
 import consultationImg from '@/assets/Consultationgénérale.jpeg'
