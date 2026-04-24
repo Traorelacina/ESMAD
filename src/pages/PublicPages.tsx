@@ -1,13 +1,13 @@
-// src/pages/PublicPages.tsx
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { CheckCircle, Heart, Users, Shield, Clock } from 'lucide-react'
 import Hero from '@/components/home/Hero'
 import imageEsma from '@/assets/image_esma.jpeg'
+import imagefontEsma from '@/assets/ImagedefondMenuLaClinique.png'
 
 // ─── IMAGES PER PAGE ──────────────────────────────────────────────────────────
 const IMAGES = {
-  clinique:   'https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=1600&q=80',
+  clinique:   imagefontEsma,
   services:   'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1600&q=80',
   medecins:   'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80',
   assurances: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=80',
@@ -17,10 +17,10 @@ const IMAGES = {
 // PAGE CLINIQUE (La clinique)
 // ─────────────────────────────────────────────────────────────────────────────
 const VALUES = [
-  { icon: Heart,  title: 'Excellence',    desc: 'Des soins de la plus haute qualité médicale et humaine pour chaque patient.', color: '#2563EB' },
-  { icon: Users,  title: 'Accessibilité', desc: 'Des soins accessibles à tous les membres de la communauté, sans discrimination.', color: '#16A34A' },
-  { icon: Shield, title: 'Integrite',     desc: 'Ethique médicale rigoureuse, transparence totale et respect du patient.', color: '#D97706' },
-  { icon: Clock,  title: 'Réactivite',    desc: "Réponse rapide et efficace, en particulier pour les situations d'urgence.", color: '#DC2626' },
+  { icon: Heart,  title: 'EXCELLENCE',    desc: 'Des soins de la plus haute qualité médicale et humaine pour chaque patient.', color: '#2563EB' },
+  { icon: Users,  title: 'ACCESSIBILITÉ', desc: 'Des soins accessibles à tous les membres de la communauté, sans discrimination.', color: '#16A34A' },
+  { icon: Shield, title: 'INTÉGRITÉ',     desc: 'Éthique médicale rigoureuse, transparence totale et respect du patient.', color: '#D97706' },
+  { icon: Clock,  title: 'RÉACTIVITÉ',    desc: "Réponse rapide et efficace, en particulier pour les situations d'urgence.", color: '#DC2626' },
 ]
 
 const FEATURES = [
@@ -46,7 +46,7 @@ export function CliniqueePage() {
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64, alignItems: 'center' }} className="clinique-grid">
 
-            {/* Image avec l'image réelle */}
+            {/* Image */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -66,12 +66,38 @@ export function CliniqueePage() {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.1 }}
             >
-              <span style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 12 }}>
-                
+              <span style={{ 
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 12,
+                padding: '8px 28px',
+                borderRadius: 60,
+                background: 'rgba(124, 179, 66, 0.12)',
+                border: '2px solid #7CB342',
+                boxShadow: '0 0 12px rgba(124, 179, 66, 0.3)',
+                marginBottom: 24,
+              }}>
+                <div style={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
+                  background: '#7CB342',
+                  boxShadow: '0 0 6px #7CB342',
+                }} />
+                <h2 style={{ 
+                  fontSize: 'clamp(22px, 3.5vw, 32px)', 
+                  fontWeight: 800, 
+                  color: '#7CB342', 
+                  margin: 0, 
+                  lineHeight: 1.2,
+                  fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                  letterSpacing: '0.05em',
+                }}>
+                  NOTRE HISTOIRE
+                </h2>
               </span>
-              <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 800, color: '#0A1628', marginBottom: 24, lineHeight: 1.2 }}>
-                NOTRE HISTOIRE
-              </h2>
+              
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16, color: '#4B5563', lineHeight: 1.8, fontSize: 15.5 }}>
                 <p>
                   ESMAD (ESPACE MEDICAL ANADOR) est un établissement de santé situé à Abobo Anador,
@@ -118,10 +144,30 @@ export function CliniqueePage() {
             transition={{ duration: 0.6 }}
             style={{ textAlign: 'center', marginBottom: 52 }}
           >
-            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 800, color: '#0A1628', lineHeight: 1.2 }}>
+            <span style={{ 
+              display: 'block', 
+              fontSize: 24, 
+              fontWeight: 800, 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.2em', 
+              color: '#7CB342', 
+              marginBottom: 16, 
+              fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
+            }}>
               NOS VALEURS
-            </h2>
-            <p style={{ color: '#6B7280', fontSize: 16, marginTop: 12, maxWidth: 480, margin: '12px auto 0' }}>
+            </span>
+
+            <p style={{ 
+              color: '#6B7280', 
+              fontSize: 'clamp(18px, 5vw, 22px)', 
+              maxWidth: '90%', 
+              margin: '0 auto', 
+              lineHeight: 1.6,
+              whiteSpace: 'nowrap',
+              overflow: 'auto',
+              paddingBottom: '8px',
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+            }}>
               Des principes qui guident notre action quotidienne au service de votre santé.
             </p>
           </motion.div>
@@ -136,11 +182,23 @@ export function CliniqueePage() {
                 transition={{ delay: i * 0.1, duration: 0.5 }}
                 style={{ background: '#fff', borderRadius: 16, padding: '28px 22px', border: '1px solid #E8EDF5', textAlign: 'center', boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}
               >
-                <div style={{ width: 52, height: 52, borderRadius: 14, background: v.color + '15', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-                  <v.icon size={24} color={v.color} strokeWidth={1.7} />
+                <div style={{ width: 70, height: 70, borderRadius: 20, background: v.color + '10', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', border: `1px solid ${v.color}20` }}>
+                  <v.icon size={32} color={v.color} strokeWidth={1.5} />
                 </div>
-                <h4 style={{ fontSize: 17, fontWeight: 700, color: '#0A1628', marginBottom: 8 }}>{v.title}</h4>
-                <p style={{ fontSize: 13.5, color: '#6B7280', lineHeight: 1.7 }}>{v.desc}</p>
+                <h4 style={{ 
+                  fontSize: 'clamp(18px, 2vw, 22px)', 
+                  fontWeight: 700, 
+                  color: '#0A1628', 
+                  marginBottom: 12,
+                  fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                  letterSpacing: '0.02em',
+                }}>{v.title}</h4>
+                <p style={{ 
+                  fontSize: 'clamp(14px, 1.5vw, 15px)', 
+                  color: '#6B7280', 
+                  lineHeight: 1.6,
+                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+                }}>{v.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -218,24 +276,31 @@ export function ServicesPage() {
                 transition={{ delay: i * 0.1, duration: 0.55 }}
                 style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8EDF5', overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.05)', position: 'relative' }}
               >
-                {/* Color bar */}
                 <div style={{ height: 4, background: s.color }} />
-
-                {/* Urgent badge */}
                 {s.urgent && (
                   <div style={{ position: 'absolute', top: 16, right: 16, background: '#DC2626', color: '#fff', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 20 }}>
                     24/7
                   </div>
                 )}
-
                 <div style={{ padding: '24px 26px 26px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 14 }}>
                     <div style={{ width: 52, height: 52, borderRadius: 14, background: s.bgLight, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <s.icon size={26} color={s.color} strokeWidth={1.7} />
                     </div>
-                    <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A1628' }}>{s.title}</h3>
+                    <h3 style={{ 
+                      fontSize: 18, 
+                      fontWeight: 700, 
+                      color: '#0A1628',
+                      fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                    }}>{s.title}</h3>
                   </div>
-                  <p style={{ fontSize: 14, color: '#6B7280', lineHeight: 1.75, marginBottom: 16 }}>{s.desc}</p>
+                  <p style={{ 
+                    fontSize: 14, 
+                    color: '#6B7280', 
+                    lineHeight: 1.75, 
+                    marginBottom: 16,
+                    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+                  }}>{s.desc}</p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                     {s.tags.map((t) => (
                       <span key={t} style={{ padding: '4px 10px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: s.bgLight, color: s.color }}>{t}</span>
@@ -331,6 +396,7 @@ export function DoctorsPage() {
                   background: filter === tab.key ? '#0A1628' : '#fff',
                   color: filter === tab.key ? '#fff' : '#6B7280',
                   transition: 'all 0.2s ease',
+                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
                 }}
               >
                 {tab.label}
@@ -348,20 +414,19 @@ export function DoctorsPage() {
                 transition={{ delay: i * 0.08, duration: 0.5 }}
                 style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8EDF5', padding: '28px 24px', boxShadow: '0 2px 12px rgba(0,0,0,0.05)', textAlign: 'center' }}
               >
-                {/* Avatar */}
                 <div style={{ width: 72, height: 72, borderRadius: '50%', background: `linear-gradient(135deg, ${doc.color}, ${doc.color}aa)`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: 24, fontWeight: 700, color: '#fff', letterSpacing: '0.02em' }}>
                   {doc.initials}
                 </div>
-
-                {/* Name */}
-                <h3 style={{ fontSize: 17, fontWeight: 700, color: '#0A1628', marginBottom: 6 }}>{doc.name}</h3>
-
-                {/* Specialty badge */}
+                <h3 style={{ 
+                  fontSize: 17, 
+                  fontWeight: 700, 
+                  color: '#0A1628', 
+                  marginBottom: 6,
+                  fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                }}>{doc.name}</h3>
                 <div style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: doc.bg, color: doc.color, marginBottom: 14 }}>
                   {doc.specialty}
                 </div>
-
-                {/* Availability */}
                 <div style={{ fontSize: 13, color: '#6B7280' }}>
                   <span style={{ fontWeight: 600, color: '#374151' }}>Disponible : </span>
                   {doc.schedule}
@@ -414,15 +479,34 @@ export function AssurancesPage() {
             transition={{ duration: 0.6 }}
             style={{ textAlign: 'center', marginBottom: 56, maxWidth: 600, margin: '0 auto 56px' }}
           >
-            <span style={{ display: 'block', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 12 }}>
-              Couverture santé
+            <span style={{ 
+              display: 'block', 
+              fontSize: 24, 
+              fontWeight: 800, 
+              textTransform: 'uppercase', 
+              letterSpacing: '0.2em', 
+              color: '#7CB342', 
+              marginBottom: 16, 
+              fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
+            }}>
+              NOS ASSURANCES
             </span>
-            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', fontWeight: 800, color: '#0A1628', marginBottom: 16 }}>
-              Nos partenaires assurance
+            <h2 style={{ 
+              fontSize: 'clamp(28px, 4vw, 42px)', 
+              fontWeight: 800, 
+              color: '#0A1628', 
+              marginBottom: 16,
+              fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+            }}>
+              Partenaires assurance
             </h2>
-            <p style={{ color: '#6B7280', fontSize: 15.5, lineHeight: 1.7 }}>
+            <p style={{ 
+              color: '#6B7280', 
+              fontSize: 'clamp(18px, 5vw, 22px)', 
+              lineHeight: 1.6,
+              fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+            }}>
               Renseignez-vous auprès de notre accueil pour connaître les modalités de prise en charge.
-              Nos partenaires vous offrent une couverture adaptée à vos besoins.
             </p>
           </motion.div>
 
@@ -436,11 +520,10 @@ export function AssurancesPage() {
                 transition={{ delay: i * 0.06, duration: 0.45 }}
                 style={{ borderRadius: 14, border: '1px solid #E8EDF5', padding: '24px 20px', textAlign: 'center', background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}
               >
-                {/* Logo placeholder with initial */}
                 <div style={{ width: 56, height: 56, borderRadius: 14, background: a.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 18, fontWeight: 800, color: a.color }}>
                   {a.name.slice(0, 2).toUpperCase()}
                 </div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#0A1628' }}>{a.name}</div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: '#0A1628', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>{a.name}</div>
                 <div style={{ display: 'inline-block', marginTop: 8, padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, background: a.bg, color: a.color }}>
                   Partenaire agréé
                 </div>
@@ -457,8 +540,8 @@ export function AssurancesPage() {
           >
             <Shield size={22} color="#16A34A" style={{ flexShrink: 0, marginTop: 2 }} />
             <div>
-              <div style={{ fontWeight: 700, color: '#166534', fontSize: 15, marginBottom: 4 }}>Information pratique</div>
-              <p style={{ color: '#166534', fontSize: 14, lineHeight: 1.7 }}>
+              <div style={{ fontWeight: 700, color: '#166534', fontSize: 15, marginBottom: 4, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>Information pratique</div>
+              <p style={{ color: '#166534', fontSize: 14, lineHeight: 1.7, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
                 Présentez votre carte d'assurance ou de mutuelle à l'accueil lors de votre arrivée.
                 Notre équipe administrative se chargera des démarches de prise en charge.
                 Pour toute question, contactez-nous au <strong>01 01 81 92 86</strong>.
