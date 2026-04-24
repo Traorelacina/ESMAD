@@ -49,12 +49,12 @@ import slide2Image from '@/assets/Slide2.jpeg'
 // ─── DONNÉES SLIDER ───────────────────────────────────────────────────────────
 const SLIDES = [
   {
-    image: slide1Image,     // Slide 1: image avec texte intégré
-    hasContent: false,      // Pas de texte superposé
+    image: slide1Image,     
+    hasContent: false,      
   },
   {
-    image: slide2Image,     // Slide 2: image avec texte intégré
-    hasContent: false,      // Pas de texte superposé
+    image: slide2Image,    
+    hasContent: false,      
   },
 
 ]
@@ -102,7 +102,7 @@ function MainSlider() {
               backgroundImage: `url(${slide.image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              filter: 'blur(22px) brightness(0.45) saturate(1.2)',
+              filter: 'blur(22px) brightness(1) saturate(1.2)',
               transform: 'scale(1.08)',
             }}
           />
