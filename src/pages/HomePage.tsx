@@ -242,10 +242,20 @@ function OffresSection() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
-          <span style={{ display: 'block', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 16 }}>
+          <span style={{ display: 'block', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 16, fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" }}>
             Nos prestations
           </span>
-          <p style={{ color: '#6B7280', fontSize: 17, maxWidth: 600, margin: '0 auto', lineHeight: 1.6 }}>
+          <p style={{ 
+            color: '#6B7280', 
+            fontSize: 'clamp(18px, 5vw, 22px)', 
+            maxWidth: '90%', 
+            margin: '0 auto', 
+            lineHeight: 1.6,
+            whiteSpace: 'nowrap',
+            overflow: 'auto',
+            paddingBottom: '8px',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+          }}>
             ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
@@ -277,9 +287,20 @@ function OffresSection() {
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <o.icon size={22} color={o.color} strokeWidth={1.7} />
                   </div>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A1628', lineHeight: 1.3 }}>{o.title}</h3>
+                  <h3 style={{ 
+                    fontSize: 18, 
+                    fontWeight: 700, 
+                    color: '#0A1628', 
+                    lineHeight: 1.3,
+                    fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+                  }}>{o.title}</h3>
                 </div>
-                <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.65 }}>{o.desc}</p>
+                <p style={{ 
+                  fontSize: 15, 
+                  color: '#6B7280', 
+                  lineHeight: 1.65,
+                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+                }}>{o.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -308,15 +329,32 @@ function AssurancesStrip() {
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 48 }}
         >
-          <span style={{ display: 'block', fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.14em', color: '#7CB342', marginBottom: 12 }}>
-            Couverture santé
-          </span>
-          <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', fontWeight: 800, color: '#0A1628', marginBottom: 12 }}>
-            Nos assurances partenaires
-          </h2>
-          <p style={{ color: '#6B7280', fontSize: 16, maxWidth: 500, margin: '0 auto' }}>
-            ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles de Côte d'Ivoire.
-          </p>
+          <span style={{ 
+  display: 'block', 
+  fontSize: 24, 
+  fontWeight: 800, 
+  textTransform: 'uppercase', 
+  letterSpacing: '0.2em', 
+  color: '#7CB342', 
+  marginBottom: 16, 
+  fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
+}}>
+  Couverture santé
+</span>
+
+<p style={{ 
+  color: '#6B7280', 
+  fontSize: 'clamp(18px, 5vw, 22px)', 
+  maxWidth: '90%', 
+  margin: '0 auto', 
+  lineHeight: 1.6,
+  whiteSpace: 'nowrap',
+  overflow: 'auto',
+  paddingBottom: '8px',
+  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+}}>
+  ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles de Côte d'Ivoire.
+</p>
         </motion.div>
 
         <div style={{ overflow: 'hidden', position: 'relative', marginBottom: 36 }}>
@@ -330,7 +368,7 @@ function AssurancesStrip() {
             {[...ASSURANCES_NAMES, ...ASSURANCES_NAMES].map((name, i) => (
               <div
                 key={i}
-                style={{ padding: '14px 24px', borderRadius: 12, background: '#fff', border: '1px solid #E5E7EB', fontSize: 15, fontWeight: 600, color: '#374151', whiteSpace: 'nowrap', flexShrink: 0, boxShadow: '0 1px 6px rgba(0,0,0,0.04)' }}
+                style={{ padding: '14px 24px', borderRadius: 12, background: '#fff', border: '1px solid #E5E7EB', fontSize: 15, fontWeight: 600, color: '#374151', whiteSpace: 'nowrap', flexShrink: 0, boxShadow: '0 1px 6px rgba(0,0,0,0.04)', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
               >
                 {name}
               </div>
@@ -341,7 +379,7 @@ function AssurancesStrip() {
         <div style={{ textAlign: 'center' }}>
           <Link
             to="/assurances"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 36px', borderRadius: 12, fontSize: 15, fontWeight: 700, color: '#1565C0', border: '2px solid #1565C0', textDecoration: 'none', background: '#fff', transition: 'all 0.2s ease' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '14px 36px', borderRadius: 12, fontSize: 15, fontWeight: 700, color: '#1565C0', border: '2px solid #1565C0', textDecoration: 'none', background: '#fff', transition: 'all 0.2s ease', fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" }}
             onMouseEnter={(e) => { e.currentTarget.style.background = '#EFF6FF' }}
             onMouseLeave={(e) => { e.currentTarget.style.background = '#fff' }}
           >

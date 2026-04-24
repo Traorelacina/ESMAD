@@ -7,7 +7,7 @@ import logo from '@/assets/logo.png'
 const MENU = [
   { label: 'Accueil',                    href: '/' },
   { label: 'La clinique',                href: '/clinique' },
-  { label: 'Nos services',               href: '/services' },
+  { label: 'Nos prestations',               href: '/services' },
   { label: 'Nos assurances partenaires', href: '/assurances' },
   { label: 'Nos médecins',               href: '/medecins' },
   { label: 'Nos contacts',               href: '/contact' },
