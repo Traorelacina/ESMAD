@@ -15,7 +15,7 @@ import urgencesImg from '@/assets/urgence.jpeg'
 const IMAGES = {
   clinique:   imagefontEsma,
   services:   'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1600&q=80',
-  medecins:   'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1600&q=80',
+  medecins:   'https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=1600&q=80',
   assurances: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1600&q=80',
 }
 
@@ -555,15 +555,29 @@ export function AssurancesPage() {
               NOS ASSURANCES
             </span>
           
-          <p style={{ 
-  color: '#6B7280', 
-  fontSize: 'clamp(14px, 3vw, 18px)', 
-  lineHeight: 1.6,
-  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-  whiteSpace: 'nowrap',
-}}>
-  Renseignez-vous auprès de notre accueil pour connaître les modalités de prise en charge.
-</p>
+          
+  <div>
+  <p style={{ 
+    color: '#6B7280', 
+    fontSize: 'clamp(14px, 3vw, 18px)', 
+    lineHeight: 1.6,
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+    marginBottom: 8,
+    whiteSpace: 'nowrap',
+  }}>
+    Renseignez-vous auprès de notre service d'accueil pour connaître les modalités de prise en charge.
+  </p>
+  <p style={{ 
+    color: '#6B7280', 
+    fontSize: 'clamp(14px, 3vw, 18px)', 
+    lineHeight: 1.6,
+    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+    marginTop: 0,
+    whiteSpace: 'nowrap',
+  }}>
+    Nos partenaires vous offrent une couverture adaptée à vos besoins.
+  </p>
+</div>
           </motion.div>
 
           {/* Grid logos */}

@@ -7,7 +7,7 @@ import toast from 'react-hot-toast'
 import Hero from '@/components/home/Hero'
 
 // ── Image call center professionnelle (Unsplash)
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1600&q=80'
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1600&q=80'
 
 // ── Coordonnées Abobo Anador, Abidjan pour l'embed Google Maps
 const GOOGLE_MAPS_EMBED =
