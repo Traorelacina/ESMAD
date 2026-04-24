@@ -17,6 +17,10 @@ import echographieImg from '@/assets/Echo.jpeg'
 import materniteImg from '@/assets/maternité.jpeg'
 import urgencesImg from '@/assets/urgence.jpeg'
 
+// Imports des images pour les slides 1 et 2 (images avec texte déjà intégré)
+import slide1Image from '@/assets/Slide.jpeg'
+import slide2Image from '@/assets/Slide2.jpeg'
+
 // ─── STYLES GLOBAUX ───────────────────────────────────────────────────────────
 ;(function injectStyles() {
   if (document.getElementById('esmad-home-styles')) return
@@ -45,31 +49,20 @@ import urgencesImg from '@/assets/urgence.jpeg'
 // ─── DONNÉES SLIDER ───────────────────────────────────────────────────────────
 const SLIDES = [
   {
-    image: imageEsma,
-    pretitle: 'Centre Médical Agréé — Abidjan',
-    title: 'ESPACE MÉDICAL ANADOR',
-    subtitle: "Un établissement de santé moderne au service de votre bien-être depuis 2010, au cœur d'Abobo.",
+    image: slide1Image,     // Slide 1: image avec texte intégré
+    hasContent: false,      // Pas de texte superposé
   },
   {
-    image: 'https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1600&q=80',
-    pretitle: 'Laboratoire médical',
-    title: 'ANALYSES DE LABORATOIRE',
-    subtitle: 'Des examens biologiques précis et rapides — hématologie, biochimie, sérologie — pour un diagnostic fiable.',
+    image: slide2Image,     // Slide 2: image avec texte intégré
+    hasContent: false,      // Pas de texte superposé
   },
-  {
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80',
-    pretitle: 'Notre équipe',
-    title: 'DES PROFESSIONNELS À VOTRE SERVICE',
-    subtitle: 'Des médecins qualifiés et bienveillants, disponibles pour vous accompagner à chaque étape de votre santé.',
-  },
+
 ]
 
 // ─── SLIDER PRINCIPAL ─────────────────────────────────────────────────────────
 function MainSlider() {
   const [cur, setCur] = useState(0)
   const timerRef = useRef<ReturnType<typeof setInterval>>(null)
-
-  const go = (idx: number) => setCur((idx + SLIDES.length) % SLIDES.length)
 
   const startTimer = () => {
     if (timerRef.current) {
@@ -92,25 +85,36 @@ function MainSlider() {
   return (
     <section style={{ position: 'relative', height: '100vh', minHeight: 580, overflow: 'hidden', background: '#060D1A' }}>
 
-      {/* Image avec fondu - object-fit cover pour remplir tout l'espace */}
+      {/* Image avec fondu - fond flouté pour éliminer les bandes noires */}
       <AnimatePresence mode="wait">
         <motion.div
           key={cur}
-          initial={{ opacity: 0, scale: 1.05 }}
+          initial={{ opacity: 0, scale: 1.03 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.8, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute', inset: 0,
-          }}
+          style={{ position: 'absolute', inset: 0 }}
         >
-          <img
-            src={typeof slide.image === 'string' ? slide.image : slide.image}
-            alt={slide.title}
+          {/* Fond flouté : même image agrandie et floutée — plus aucune bande noire */}
+          <div
             style={{
+              position: 'absolute', inset: 0,
+              backgroundImage: `url(${slide.image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              filter: 'blur(22px) brightness(0.45) saturate(1.2)',
+              transform: 'scale(1.08)',
+            }}
+          />
+          {/* Image principale nette, proportions préservées */}
+          <img
+            src={slide.image}
+            alt={`Slide ${cur + 1}`}
+            style={{
+              position: 'absolute', inset: 0,
               width: '100%',
               height: '100%',
-              objectFit: 'cover',
+              objectFit: 'contain',
               objectPosition: 'center',
               display: 'block',
             }}
@@ -118,78 +122,12 @@ function MainSlider() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Overlay dégradé */}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(6,13,26,0.6) 35%, rgba(6,13,26,0.25) 100%)', zIndex: 2 }} />
+      {/* Overlay dégradé - seulement pour le slide avec contenu texte */}
+      {slide.hasContent && (
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(6,13,26,0.6) 35%, rgba(6,13,26,0.25) 100%)', zIndex: 2 }} />
+      )}
 
-      {/* Motif grille - allégé */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none', backgroundImage: 'linear-gradient(rgba(255,255,255,0.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.01) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
-
-      {/* Contenu - Centré */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 48px', width: '100%', textAlign: 'center' }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={cur}
-              initial={{ opacity: 0, y: 32 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.65 }}
-              style={{ maxWidth: '100%', margin: '0 auto' }}
-            >
-              {/* Pretitle - Taille originale */}
-              <div style={{ 
-                display: 'inline-flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
-                gap: 8, 
-                padding: '5px 14px', 
-                borderRadius: 30, 
-                background: 'rgba(139,195,74,0.15)', 
-                border: '1px solid rgba(139,195,74,0.35)', 
-                color: '#A5D46A', 
-                fontSize: 13, 
-                fontWeight: 700, 
-                letterSpacing: '0.12em', 
-                textTransform: 'uppercase', 
-                marginBottom: 24,
-                fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
-              }}>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8BC34A', display: 'inline-block' }} />
-                {slide.pretitle}
-              </div>
-
-              {/* Titre - Taille originale */}
-              <h1 style={{ 
-                color: '#fff', 
-                fontWeight: 800, 
-                fontSize: 'clamp(38px, 6vw, 72px)', 
-                lineHeight: 1.2, 
-                marginBottom: 24, 
-                letterSpacing: '0.05em',
-                textShadow: '0 2px 10px rgba(0,0,0,0.3)',
-                fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
-                textTransform: 'uppercase',
-              }}>
-                {slide.title}
-              </h1>
-
-              {/* Sous-titre - Taille originale */}
-              <p style={{ 
-                color: 'rgba(255,255,255,0.9)', 
-                fontSize: 'clamp(15px, 2vw, 19px)', 
-                lineHeight: 1.7, 
-                marginBottom: 0, 
-                maxWidth: 700, 
-                margin: '0 auto',
-                textShadow: '0 1px 5px rgba(0,0,0,0.2)',
-                fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-              }}>
-                {slide.subtitle}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
+      
 
       {/* Indicateurs */}
       <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', gap: 12 }}>
@@ -298,7 +236,6 @@ function OffresSection() {
   return (
     <section ref={ref} style={{ background: '#fff', padding: '90px 0' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -306,15 +243,13 @@ function OffresSection() {
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
           <span style={{ display: 'block', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 16 }}>
-  Nos prestations
-</span>
-          
+            Nos prestations
+          </span>
           <p style={{ color: '#6B7280', fontSize: 17, maxWidth: 600, margin: '0 auto', lineHeight: 1.6 }}>
             ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
 
-        {/* Grille 3 colonnes */}
         <div className="esmad-offres-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 28 }}>
           {OFFRES.map((o, i) => (
             <motion.div
@@ -326,7 +261,6 @@ function OffresSection() {
               onMouseEnter={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 8px 32px rgba(0,0,0,0.11)'; el.style.transform = 'translateY(-4px)' }}
               onMouseLeave={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'; el.style.transform = 'translateY(0)' }}
             >
-              {/* Image */}
               <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
                 <img
                   src={o.image}
@@ -336,11 +270,8 @@ function OffresSection() {
                   onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.06)' }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
                 />
-                {/* Barre couleur en bas de l'image */}
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 4, background: o.color }} />
               </div>
-
-              {/* Contenu */}
               <div style={{ padding: '24px 24px 30px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -371,7 +302,6 @@ function AssurancesStrip() {
   return (
     <section ref={ref} style={{ background: '#F8FAFD', padding: '80px 0', borderTop: '1px solid #E8EDF5' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -389,9 +319,7 @@ function AssurancesStrip() {
           </p>
         </motion.div>
 
-        {/* Ticker auto-scroll */}
         <div style={{ overflow: 'hidden', position: 'relative', marginBottom: 36 }}>
-          {/* Fondu bords */}
           <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 72, background: 'linear-gradient(to right, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
           <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 72, background: 'linear-gradient(to left, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
 
@@ -410,7 +338,6 @@ function AssurancesStrip() {
           </div>
         </div>
 
-        {/* Bouton */}
         <div style={{ textAlign: 'center' }}>
           <Link
             to="/assurances"
