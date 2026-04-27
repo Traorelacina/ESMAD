@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import { MapPin, Phone, Clock, Send, CheckCircle, Loader2, Mail } from 'lucide-react'
 import toast from 'react-hot-toast'
 import Hero from '@/components/home/Hero'
+import { contactsApi } from '@/api/client'
 
 // ── Image call center professionnelle (Unsplash)
 const HERO_IMAGE = 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1600&q=80'
@@ -53,7 +54,12 @@ export function ContactPage() {
     }
     setLoading(true)
     try {
-      await new Promise((r) => setTimeout(r, 1400))
+      await contactsApi.create({
+        name: form.name,
+        email: form.email || undefined,
+        phone: form.phone || undefined,
+        message: form.message,
+      })
       toast.success('Message envoyé avec succès.')
       setSent(true)
       setForm({ name: '', email: '', phone: '', message: '' })

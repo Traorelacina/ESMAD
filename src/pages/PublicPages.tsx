@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { CheckCircle, Heart, Users, Shield, Clock, Stethoscope, Baby, FlaskConical, Search, Home as HomeIcon, HeartPulse } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { CheckCircle, Heart, Users, Shield, Clock, Stethoscope, Baby, FlaskConical, Search, Home as HomeIcon, HeartPulse, Loader2 } from 'lucide-react'
 import Hero from '@/components/home/Hero'
 import imageEsma from '@/assets/image_esma.jpeg'
 import imagefontEsma from '@/assets/ImagedefondMenuLaClinique.png'
@@ -10,6 +11,7 @@ import laboratoireImg from '@/assets/Laboratoire.jpeg'
 import echographieImg from '@/assets/Echo.jpeg'
 import materniteImg from '@/assets/maternité.jpeg'
 import urgencesImg from '@/assets/urgence.jpeg'
+import { assurancesApi, medecinsApi, specialitesApi, type Assurance, type Medecin, type Specialite } from '@/api/client'
 
 // ─── IMAGES PER PAGE ──────────────────────────────────────────────────────────
 const IMAGES = {
@@ -261,7 +263,6 @@ function ServicesSection() {
   return (
     <section ref={ref} style={{ background: '#fff', padding: '90px 0' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
-        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -295,7 +296,6 @@ function ServicesSection() {
           </p>
         </motion.div>
 
-        {/* Grille 3 colonnes */}
         <div className="esmad-offres-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 28 }}>
           {OFFRES.map((o, i) => (
             <motion.div
@@ -322,7 +322,6 @@ function ServicesSection() {
                 el.style.transform = 'translateY(0)' 
               }}
             >
-              {/* Image */}
               <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
                 <img
                   src={o.image}
@@ -338,7 +337,6 @@ function ServicesSection() {
                   onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.06)' }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
                 />
-                {/* Barre couleur en bas de l'image */}
                 <div style={{ 
                   position: 'absolute', 
                   bottom: 0, 
@@ -349,7 +347,6 @@ function ServicesSection() {
                 }} />
               </div>
 
-              {/* Contenu */}
               <div style={{ padding: '24px 24px 30px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
                   <div style={{ 
@@ -403,37 +400,61 @@ export function ServicesPage() {
 // ─────────────────────────────────────────────────────────────────────────────
 // PAGE MÉDECINS
 // ─────────────────────────────────────────────────────────────────────────────
-import { useState } from 'react'
 
-const DOCTORS = [
-  { initials: 'AK', name: 'Dr. Adama Koné',         specialty: 'Médecin Généraliste',         schedule: 'Lundi - Samedi',    color: '#1565C0', bg: '#E3F2FD' },
-  { initials: 'FO', name: 'Dr. Fatou Ouédraogo',     specialty: 'Gynécologue-Obstétricienne',   schedule: 'Mardi, Jeudi, Sam', color: '#558B2F', bg: '#F1F8E9' },
-  { initials: 'KB', name: 'Dr. Kouamé Brou',         specialty: 'Pédiatre',                    schedule: 'Lundi, Mercredi, Ven', color: '#C62828', bg: '#FFEBEE' },
-  { initials: 'SI', name: 'Dr. Seydou Issa',         specialty: 'Biologiste Médical',           schedule: 'Lundi - Vendredi',  color: '#E65100', bg: '#FFF8E1' },
-  { initials: 'MC', name: 'Dr. Marie-Claire Coulibaly', specialty: 'Médecin Généraliste',       schedule: 'Mardi, Jeudi, Sam', color: '#6A1B9A', bg: '#EDE7F6' },
-  { initials: 'AL', name: 'Dr. Awa Lamine',           specialty: 'Sage-Femme Cheffe',          schedule: 'Lundi - Samedi',    color: '#006064', bg: '#E0F7FA' },
-]
-
-const FILTERS_DOC = [
-  { key: 'all',     label: 'Tous' },
-  { key: 'general', label: 'Médecine Générale' },
-  { key: 'gyn',     label: 'Gynécologie' },
-  { key: 'ped',     label: 'Pédiatrie' },
-  { key: 'lab',     label: 'Laboratoire' },
-]
-
-function getDoctorCat(d: typeof DOCTORS[0]) {
-  if (d.specialty.includes('Généraliste')) return 'general'
-  if (d.specialty.includes('Gynéco') || d.specialty.includes('Sage')) return 'gyn'
-  if (d.specialty.includes('Pédiatre')) return 'ped'
-  if (d.specialty.includes('Biolog')) return 'lab'
-  return 'other'
+function DoctorSkeleton() {
+  return (
+    <div style={{
+      background: '#fff',
+      borderRadius: 20,
+      border: '1px solid #E8EDF5',
+      overflow: 'hidden',
+      boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+    }}>
+      <div style={{ height: 240, background: 'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)' }} />
+      <div style={{ padding: '20px 24px 28px' }}>
+        <div style={{ height: 18, background: '#F1F5F9', borderRadius: 8, width: '70%', marginBottom: 10 }} />
+        <div style={{ height: 24, background: '#F1F5F9', borderRadius: 20, width: '50%', marginBottom: 14 }} />
+        <div style={{ height: 13, background: '#F1F5F9', borderRadius: 6, width: '85%' }} />
+      </div>
+    </div>
+  )
 }
 
 export function DoctorsPage() {
-  const [filter, setFilter] = useState('all')
-  const filtered = filter === 'all' ? DOCTORS : DOCTORS.filter((d) => getDoctorCat(d) === filter)
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 })
+  const [medecins, setMedecins]       = useState<Medecin[]>([])
+  const [specialites, setSpecialites] = useState<Specialite[]>([])
+  const [filter, setFilter]           = useState('all')
+  const [loading, setLoading]         = useState(true)
+  const { ref, inView }               = useInView({ triggerOnce: true, threshold: 0.05 })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const params = new URLSearchParams({ per_page: '100' })
+        const [medecinRes, specRes] = await Promise.all([
+          medecinsApi.list(params.toString()),
+          specialitesApi.list(),
+        ])
+        setMedecins(medecinRes.data.filter(m => m.is_active))
+        setSpecialites(specRes.data.filter(s => s.is_active))
+      } catch (err) {
+        console.error('Erreur chargement médecins:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchData()
+  }, [])
+
+  const filtered = filter === 'all'
+    ? medecins
+    : medecins.filter(m => String(m.specialite_id) === filter || m.specialite?.key === filter)
+
+  const filterTabs = [
+    { key: 'all', label: 'Tous' },
+    ...specialites.map(s => ({ key: s.key, label: s.name })),
+  ]
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
@@ -443,60 +464,299 @@ export function DoctorsPage() {
         subtitle="Des professionnels de santé expérimentés et dévoués à votre bien-être."
       />
 
-      <section style={{ background: '#fff', padding: '80px 0' }} ref={ref}>
+      <section style={{ background: '#F8FAFD', padding: '80px 0' }} ref={ref}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
 
-          {/* Filter tabs */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
-            {FILTERS_DOC.map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setFilter(tab.key)}
-                style={{
-                  padding: '8px 20px', borderRadius: 30,
-                  fontSize: 13.5, fontWeight: 500, cursor: 'pointer',
-                  border: filter === tab.key ? '1.5px solid #0A1628' : '1.5px solid #E5E7EB',
-                  background: filter === tab.key ? '#0A1628' : '#fff',
-                  color: filter === tab.key ? '#fff' : '#6B7280',
-                  transition: 'all 0.2s ease',
-                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-                }}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          {/* Titre section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            style={{ textAlign: 'center', marginBottom: 48 }}
+          >
+            <span style={{
+              display: 'block',
+              fontSize: 24,
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              color: '#7CB342',
+              marginBottom: 12,
+              fontFamily: "'Inter', 'Poppins', system-ui, sans-serif",
+            }}>
+              Notre équipe médicale
+            </span>
+            <p style={{
+              color: '#6B7280',
+              fontSize: 'clamp(15px, 2vw, 18px)',
+              maxWidth: 540,
+              margin: '0 auto',
+              lineHeight: 1.6,
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}>
+              Des spécialistes qualifiés pour vous accompagner à chaque étape de votre santé.
+            </p>
+          </motion.div>
 
-          {/* Cards grid */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }} className="doctors-grid">
-            {filtered.map((doc, i) => (
-              <motion.div
-                key={doc.name}
-                initial={{ opacity: 0, y: 28 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
-                style={{ background: '#fff', borderRadius: 16, border: '1px solid #E8EDF5', padding: '28px 24px', boxShadow: '0 2px 12px rgba(0,0,0,0.05)', textAlign: 'center' }}
-              >
-                <div style={{ width: 72, height: 72, borderRadius: '50%', background: `linear-gradient(135deg, ${doc.color}, ${doc.color}aa)`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', fontSize: 24, fontWeight: 700, color: '#fff', letterSpacing: '0.02em' }}>
-                  {doc.initials}
-                </div>
-                <h3 style={{ 
-                  fontSize: 17, 
-                  fontWeight: 700, 
-                  color: '#0A1628', 
-                  marginBottom: 6,
-                  fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
-                }}>{doc.name}</h3>
-                <div style={{ display: 'inline-block', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600, background: doc.bg, color: doc.color, marginBottom: 14 }}>
-                  {doc.specialty}
-                </div>
-                <div style={{ fontSize: 13, color: '#6B7280' }}>
-                  <span style={{ fontWeight: 600, color: '#374151' }}>Disponible : </span>
-                  {doc.schedule}
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Filter tabs */}
+          {!loading && filterTabs.length > 1 && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: 0.15 }}
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: 10,
+                marginBottom: 44,
+                justifyContent: 'center',
+              }}
+            >
+              {filterTabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setFilter(tab.key)}
+                  style={{
+                    padding: '9px 22px',
+                    borderRadius: 40,
+                    fontSize: 13.5,
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    border: filter === tab.key ? '2px solid #0A1628' : '2px solid #E5E7EB',
+                    background: filter === tab.key ? '#0A1628' : '#fff',
+                    color: filter === tab.key ? '#fff' : '#6B7280',
+                    transition: 'all 0.2s ease',
+                    fontFamily: "'Inter', system-ui, sans-serif",
+                    boxShadow: filter === tab.key ? '0 4px 12px rgba(10,22,40,0.18)' : 'none',
+                  }}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Chargement */}
+          {loading ? (
+            <div
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28 }}
+              className="doctors-grid"
+            >
+              {Array.from({ length: 6 }).map((_, i) => <DoctorSkeleton key={i} />)}
+            </div>
+          ) : filtered.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '80px 0',
+              color: '#9CA3AF',
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}>
+              <Stethoscope size={48} style={{ opacity: 0.25, marginBottom: 16 }} />
+              <p style={{ fontSize: 16 }}>Aucun médecin disponible pour cette spécialité.</p>
+            </div>
+          ) : (
+            <div
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28 }}
+              className="doctors-grid"
+            >
+              {filtered.map((m, i) => {
+                // La disponibilité est maintenant déterminée par is_active
+                const isDisponible = m.is_active ?? false
+
+                return (
+                  <motion.div
+                    key={m.id}
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={inView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ delay: i * 0.08, duration: 0.5 }}
+                    style={{
+                      background: '#fff',
+                      borderRadius: 20,
+                      border: '1px solid #E8EDF5',
+                      overflow: 'hidden',
+                      boxShadow: '0 2px 16px rgba(0,0,0,0.05)',
+                      transition: 'box-shadow 0.25s ease, transform 0.25s ease',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.boxShadow = '0 12px 36px rgba(0,0,0,0.12)'
+                      e.currentTarget.style.transform = 'translateY(-5px)'
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.boxShadow = '0 2px 16px rgba(0,0,0,0.05)'
+                      e.currentTarget.style.transform = 'translateY(0)'
+                    }}
+                  >
+                    {/* ── GRANDE ZONE IMAGE / AVATAR ── */}
+                    <div style={{
+                      height: 260,
+                      overflow: 'hidden',
+                      position: 'relative',
+                      background: m.photo
+                        ? '#f0f0f0'
+                        : `linear-gradient(135deg, ${m.color}22 0%, ${m.color}44 100%)`,
+                    }}>
+                      {m.photo ? (
+                        <img
+                          src={m.photo}
+                          alt={m.name}
+                          loading="lazy"
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: 'center top',
+                            display: 'block',
+                            transition: 'transform 0.55s ease',
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)' }}
+                          onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)' }}
+                        />
+                      ) : (
+                        <div style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 8,
+                        }}>
+                          <div style={{
+                            width: 100,
+                            height: 100,
+                            borderRadius: '50%',
+                            background: `linear-gradient(135deg, ${m.color}, ${m.color}bb)`,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: 38,
+                            fontWeight: 800,
+                            color: '#fff',
+                            letterSpacing: '0.02em',
+                            boxShadow: `0 8px 24px ${m.color}44`,
+                            fontFamily: "'Inter', 'Poppins', system-ui, sans-serif",
+                          }}>
+                            {m.initials}
+                          </div>
+                          <Stethoscope size={20} color={m.color} style={{ opacity: 0.5, marginTop: 8 }} />
+                        </div>
+                      )}
+
+                      {/* Bandeau coloré en bas de l'image */}
+                      <div style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        height: 4,
+                        background: m.specialite?.color ?? m.color,
+                      }} />
+                    </div>
+
+                    {/* ── INFOS ── */}
+                    <div style={{ padding: '22px 24px 28px' }}>
+                      {/* Nom */}
+                      <h3 style={{
+                        fontSize: 18,
+                        fontWeight: 700,
+                        color: '#0A1628',
+                        marginBottom: 8,
+                        lineHeight: 1.25,
+                        fontFamily: "'Inter', 'Poppins', system-ui, sans-serif",
+                      }}>
+                        {m.name}
+                      </h3>
+
+                      {/* Badge spécialité */}
+                      {m.specialite && (
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 6,
+                          padding: '5px 14px',
+                          borderRadius: 24,
+                          fontSize: 12.5,
+                          fontWeight: 600,
+                          background: m.specialite.bg_color ?? m.bg_color,
+                          color: m.specialite.color ?? m.color,
+                          marginBottom: 14,
+                          fontFamily: "'Inter', system-ui, sans-serif",
+                        }}>
+                          <div style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            background: m.specialite.color ?? m.color,
+                          }} />
+                          {m.specialite.name}
+                        </div>
+                      )}
+
+                      {/* Séparateur */}
+                      <div style={{ height: 1, background: '#F0F4F8', marginBottom: 14 }} />
+
+                      {/* ── BADGE DISPONIBILITÉ (géré depuis l'admin) ── */}
+                      <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        padding: '5px 14px',
+                        borderRadius: 24,
+                        fontSize: 12.5,
+                        fontWeight: 600,
+                        background: isDisponible ? '#F0FDF4' : '#F9FAFB',
+                        color: isDisponible ? '#16A34A' : '#9CA3AF',
+                        border: `1px solid ${isDisponible ? '#BBF7D0' : '#E5E7EB'}`,
+                        fontFamily: "'Inter', system-ui, sans-serif",
+                      }}>
+                        <div style={{
+                          width: 7,
+                          height: 7,
+                          borderRadius: '50%',
+                          background: isDisponible ? '#16A34A' : '#D1D5DB',
+                          boxShadow: isDisponible ? '0 0 5px #16A34A88' : 'none',
+                        }} />
+                        {isDisponible ? 'Disponible' : 'Non disponible'}
+                      </div>
+
+                      {/* Email */}
+                      {m.email && (
+                        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 8 }}>
+                          <div style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 8,
+                            background: '#F0FDF4',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                          }}>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#7CB342" strokeWidth="2.2">
+                              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                              <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                          </div>
+                          <a
+                            href={`mailto:${m.email}`}
+                            style={{
+                              fontSize: 12.5,
+                              color: '#7CB342',
+                              textDecoration: 'none',
+                              fontFamily: "'Inter', system-ui, sans-serif",
+                              fontWeight: 500,
+                            }}
+                          >
+                            {m.email}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+          )}
         </div>
       </section>
     </motion.div>
@@ -506,23 +766,44 @@ export function DoctorsPage() {
 // ─────────────────────────────────────────────────────────────────────────────
 // PAGE ASSURANCES
 // ─────────────────────────────────────────────────────────────────────────────
-const ASSURANCES_LIST = [
-  { name: 'NSIA Assurances',        color: '#2563EB', bg: '#EFF6FF' },
-  { name: 'SUNU Group',             color: '#16A34A', bg: '#F0FDF4' },
-  { name: 'Allianz CI',             color: '#D97706', bg: '#FFFBEB' },
-  { name: "AXA Côte d'Ivoire",      color: '#DC2626', bg: '#FEF2F2' },
-  { name: 'CNPS',                   color: '#7C3AED', bg: '#F5F3FF' },
-  { name: 'Saham Assurance',        color: '#0891B2', bg: '#ECFEFF' },
-  { name: 'UAB Assurance',          color: '#EA580C', bg: '#FFF7ED' },
-  { name: 'Atlantique Assurances',  color: '#0369A1', bg: '#F0F9FF' },
-  { name: 'Colina Assurances',      color: '#4F46E5', bg: '#EEF2FF' },
-  { name: 'GNA Assurances',         color: '#065F46', bg: '#ECFDF5' },
-  { name: 'Mutuelle CGS',           color: '#92400E', bg: '#FFFBEB' },
-  { name: 'IPRES',                  color: '#6B21A8', bg: '#FAF5FF' },
-]
+
+function AssuranceSkeleton() {
+  return (
+    <div style={{
+      borderRadius: 18,
+      border: '1px solid #E8EDF5',
+      background: '#fff',
+      overflow: 'hidden',
+    }}>
+      <div style={{ height: 160, background: 'linear-gradient(135deg, #F1F5F9 0%, #E2E8F0 100%)' }} />
+      <div style={{ padding: '18px 20px 22px' }}>
+        <div style={{ height: 16, background: '#F1F5F9', borderRadius: 6, width: '75%', margin: '0 auto 10px' }} />
+        <div style={{ height: 22, background: '#F1F5F9', borderRadius: 20, width: '50%', margin: '0 auto' }} />
+      </div>
+    </div>
+  )
+}
 
 export function AssurancesPage() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.05 })
+  const [assurances, setAssurances] = useState<Assurance[]>([])
+  const [loading, setLoading]       = useState(true)
+  const { ref, inView }             = useInView({ triggerOnce: true, threshold: 0.05 })
+
+  useEffect(() => {
+    const fetchAssurances = async () => {
+      setLoading(true)
+      try {
+        const params = new URLSearchParams({ per_page: '100' })
+        const res = await assurancesApi.list(params.toString())
+        setAssurances(res.data.filter(a => a.is_active))
+      } catch (err) {
+        console.error('Erreur chargement assurances:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchAssurances()
+  }, [])
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
@@ -532,7 +813,7 @@ export function AssurancesPage() {
         subtitle="ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles en Côte d'Ivoire."
       />
 
-      <section style={{ background: '#fff', padding: '80px 0' }} ref={ref}>
+      <section style={{ background: '#F8FAFD', padding: '80px 0' }} ref={ref}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
 
           {/* Intro */}
@@ -540,78 +821,238 @@ export function AssurancesPage() {
             initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            style={{ textAlign: 'center', marginBottom: 56, maxWidth: 600, margin: '0 auto 56px' }}
+            style={{ textAlign: 'center', marginBottom: 56 }}
           >
-            <span style={{ 
-              display: 'block', 
-              fontSize: 24, 
-              fontWeight: 800, 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.2em', 
-              color: '#7CB342', 
-              marginBottom: 16, 
-              fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
+            <span style={{
+              display: 'block',
+              fontSize: 24,
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.2em',
+              color: '#7CB342',
+              marginBottom: 16,
+              fontFamily: "'Inter', 'Poppins', system-ui, sans-serif",
             }}>
               NOS ASSURANCES
             </span>
-          
-          
-  <div>
-  <p style={{ 
-    color: '#6B7280', 
-    fontSize: 'clamp(14px, 3vw, 18px)', 
-    lineHeight: 1.6,
-    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-    marginBottom: 8,
-    whiteSpace: 'nowrap',
-  }}>
-    Renseignez-vous auprès de notre service d'accueil pour connaître les modalités de prise en charge.
-  </p>
-  <p style={{ 
-    color: '#6B7280', 
-    fontSize: 'clamp(14px, 3vw, 18px)', 
-    lineHeight: 1.6,
-    fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-    marginTop: 0,
-    whiteSpace: 'nowrap',
-  }}>
-    Nos partenaires vous offrent une couverture adaptée à vos besoins.
-  </p>
-</div>
+            <p style={{
+              color: '#6B7280',
+              fontSize: 'clamp(14px, 2vw, 17px)',
+              lineHeight: 1.7,
+              maxWidth: 580,
+              margin: '0 auto',
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}>
+              Renseignez-vous auprès de notre service d'accueil pour connaître les modalités de prise en charge.
+              Nos partenaires vous offrent une couverture adaptée à vos besoins.
+            </p>
           </motion.div>
 
-          {/* Grid logos */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }} className="assurances-grid">
-            {ASSURANCES_LIST.map((a, i) => (
-              <motion.div
-                key={a.name}
-                initial={{ opacity: 0, scale: 0.88, y: 16 }}
-                animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
-                transition={{ delay: i * 0.06, duration: 0.45 }}
-                style={{ borderRadius: 14, border: '1px solid #E8EDF5', padding: '24px 20px', textAlign: 'center', background: '#fff', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}
-              >
-                <div style={{ width: 56, height: 56, borderRadius: 14, background: a.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 18, fontWeight: 800, color: a.color }}>
-                  {a.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: '#0A1628', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>{a.name}</div>
-                <div style={{ display: 'inline-block', marginTop: 8, padding: '3px 10px', borderRadius: 20, fontSize: 11, fontWeight: 600, background: a.bg, color: a.color }}>
-                  Partenaire agréé
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          {/* Grid */}
+          {loading ? (
+            <div
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}
+              className="assurances-grid"
+            >
+              {Array.from({ length: 6 }).map((_, i) => <AssuranceSkeleton key={i} />)}
+            </div>
+          ) : assurances.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '80px 0',
+              color: '#9CA3AF',
+              fontFamily: "'Inter', system-ui, sans-serif",
+            }}>
+              <Shield size={48} style={{ opacity: 0.25, marginBottom: 16 }} />
+              <p style={{ fontSize: 16 }}>Aucune assurance partenaire disponible pour le moment.</p>
+            </div>
+          ) : (
+            <div
+              style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}
+              className="assurances-grid"
+            >
+              {assurances.map((a, i) => (
+                <motion.div
+                  key={a.id}
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
+                  transition={{ delay: i * 0.07, duration: 0.45 }}
+                  style={{
+                    borderRadius: 18,
+                    border: '1px solid #E8EDF5',
+                    background: '#fff',
+                    overflow: 'hidden',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
+                    transition: 'box-shadow 0.25s ease, transform 0.25s ease',
+                    cursor: a.website ? 'pointer' : 'default',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.boxShadow = '0 10px 32px rgba(0,0,0,0.11)'
+                    e.currentTarget.style.transform = 'translateY(-5px)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.05)'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                  onClick={() => a.website && window.open(a.website, '_blank', 'noopener,noreferrer')}
+                >
+                  <div style={{
+                    height: 260,
+                    overflow: 'hidden',
+                    position: 'relative',
+                    background: a.logo
+                      ? (a.bg_color ?? '#F8FAFD')
+                      : `linear-gradient(135deg, ${a.color ?? '#7CB342'}22 0%, ${a.color ?? '#7CB342'}44 100%)`,
+                  }}>
+                    {a.logo ? (
+                      <img
+                        src={a.logo}
+                        alt={a.name}
+                        loading="lazy"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'contain',
+                          objectPosition: 'center',
+                          display: 'block',
+                          padding: '24px',
+                          boxSizing: 'border-box',
+                          transition: 'transform 0.55s ease',
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)' }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)' }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 10,
+                      }}>
+                        <div style={{
+                          width: 110,
+                          height: 110,
+                          borderRadius: 28,
+                          background: `linear-gradient(135deg, ${a.color ?? '#7CB342'}, ${a.color ?? '#7CB342'}bb)`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: 36,
+                          fontWeight: 800,
+                          color: '#fff',
+                          boxShadow: `0 8px 28px ${a.color ?? '#7CB342'}44`,
+                          fontFamily: "'Space Mono', monospace",
+                          letterSpacing: '-0.02em',
+                        }}>
+                          {a.initials}
+                        </div>
+                        <Shield size={20} color={a.color ?? '#7CB342'} style={{ opacity: 0.4, marginTop: 4 }} />
+                      </div>
+                    )}
 
-          {/* Note */}
+                    <div style={{
+                      position: 'absolute',
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: 4,
+                      background: a.color ?? '#7CB342',
+                    }} />
+                  </div>
+
+                  <div style={{ padding: '18px 22px 22px', textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: 15.5,
+                      fontWeight: 700,
+                      color: '#0A1628',
+                      marginBottom: 10,
+                      lineHeight: 1.3,
+                      fontFamily: "'Inter', system-ui, sans-serif",
+                    }}>
+                      {a.name}
+                    </div>
+
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      padding: '5px 14px',
+                      borderRadius: 24,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      background: (a.bg_color ?? '#F0FDF4'),
+                      color: (a.color ?? '#16A34A'),
+                      fontFamily: "'Inter', system-ui, sans-serif",
+                      marginBottom: a.website ? 10 : 0,
+                    }}>
+                      <CheckCircle size={11} />
+                      Partenaire agréé
+                    </div>
+
+                    {a.website && (
+                      <div style={{
+                        fontSize: 11.5,
+                        color: '#9CA3AF',
+                        fontFamily: "'Inter', system-ui, sans-serif",
+                        marginTop: 4,
+                      }}>
+                        {a.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {/* Note info pratique */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.8 }}
-            style={{ marginTop: 48, background: '#F0FDF4', borderRadius: 16, padding: '24px 28px', border: '1px solid #BBDDC3', display: 'flex', alignItems: 'flex-start', gap: 14 }}
+            transition={{ delay: 0.9 }}
+            style={{
+              marginTop: 52,
+              background: '#F0FDF4',
+              borderRadius: 18,
+              padding: '24px 32px',
+              border: '1px solid #BBDDC3',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 16,
+            }}
           >
-            <Shield size={22} color="#16A34A" style={{ flexShrink: 0, marginTop: 2 }} />
+            <div style={{
+              width: 42,
+              height: 42,
+              borderRadius: 12,
+              background: '#D1FAE5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Shield size={20} color="#16A34A" />
+            </div>
             <div>
-              <div style={{ fontWeight: 700, color: '#166534', fontSize: 15, marginBottom: 4, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>Information pratique</div>
-              <p style={{ color: '#166534', fontSize: 14, lineHeight: 1.7, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
+              <div style={{
+                fontWeight: 700,
+                color: '#166534',
+                fontSize: 15,
+                marginBottom: 6,
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}>
+                Information pratique
+              </div>
+              <p style={{
+                color: '#166534',
+                fontSize: 14,
+                lineHeight: 1.7,
+                margin: 0,
+                fontFamily: "'Inter', system-ui, sans-serif",
+              }}>
                 Présentez votre carte d'assurance ou de mutuelle à l'accueil lors de votre arrivée.
                 Notre équipe administrative se chargera des démarches de prise en charge.
                 Pour toute question, contactez-nous au <strong>01 01 81 92 86</strong>.

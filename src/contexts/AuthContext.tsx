@@ -1,48 +1,69 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
-import type { User } from '@/types'
+// src/context/AuthContext.tsx
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { authApi, type Admin } from '@/api/client'
 
 interface AuthContextType {
-  user: User | null
+  admin: Admin | null
   token: string | null
-  isAuthenticated: boolean
-  login: (user: User, token: string) => void
-  logout: () => void
+  loading: boolean
+  isAuthenticated: boolean          // ← AJOUT
+  login: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+  setAdmin: (a: Admin) => void
 }
 
-const AuthContext = createContext<AuthContextType | null>(null)
+const AuthContext = createContext<AuthContextType>(null!)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('esmad_user')
-    return saved ? JSON.parse(saved) : null
-  })
-  const [token, setToken] = useState<string | null>(
-    () => localStorage.getItem('esmad_token'),
-  )
+  const [admin, setAdmin]     = useState<Admin | null>(null)
+  const [token, setToken]     = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const login = useCallback((u: User, t: string) => {
-    setUser(u)
-    setToken(t)
-    localStorage.setItem('esmad_user', JSON.stringify(u))
-    localStorage.setItem('esmad_token', t)
+  // Hydratation au démarrage
+  useEffect(() => {
+    const saved = localStorage.getItem('esmad_token')
+    if (saved) {
+      setToken(saved)
+      authApi.me()
+        .then((data) => setAdmin((data as any).data ?? data))
+        .catch(() => {
+          localStorage.removeItem('esmad_token')
+          setToken(null)
+        })
+        .finally(() => setLoading(false))
+    } else {
+      setLoading(false)
+    }
   }, [])
 
-  const logout = useCallback(() => {
-    setUser(null)
-    setToken(null)
-    localStorage.removeItem('esmad_user')
+  const login = async (email: string, password: string) => {
+    const res = await authApi.login(email, password)
+    localStorage.setItem('esmad_token', res.token)
+    setToken(res.token)
+    setAdmin(res.admin)
+  }
+
+  const logout = async () => {
+    try { await authApi.logout() } catch {}
     localStorage.removeItem('esmad_token')
-  }, [])
+    setToken(null)
+    setAdmin(null)
+  }
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated: !!token, login, logout }}>
-      {children}
+    <AuthContext.Provider value={{
+      admin,
+      token,
+      loading,
+      isAuthenticated: !!token && !!admin,   // ← AJOUT
+      login,
+      logout,
+      setAdmin,
+    }}>
+      {/* Bloque le rendu jusqu'à ce que l'hydratation soit terminée */}
+      {!loading && children}
     </AuthContext.Provider>
   )
 }
 
-export function useAuth() {
-  const ctx = useContext(AuthContext)
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider')
-  return ctx
-}
+export const useAuth = () => useContext(AuthContext)

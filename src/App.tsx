@@ -1,5 +1,6 @@
-import { Suspense, lazy } from 'react'
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+// App.tsx
+import { Suspense, lazy, useState, useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import { Toaster } from 'react-hot-toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -8,17 +9,27 @@ import TopBar from '@/components/layout/TopBar'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
+import AdminLayout from '@/components/admin/AdminLayout'
+import { contactsApi } from '@/api/client'
 
 import HomePage from '@/pages/HomePage'
 import { ServicesPage, DoctorsPage, CliniqueePage, AssurancesPage } from '@/pages/PublicPages'
 import { ContactPage } from '@/pages/FormPages'
 
-const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'))
-const AdminLogin    = lazy(() => import('@/pages/admin/AdminLogin'))
+// Admin pages
+const AdminLogin        = lazy(() => import('@/pages/admin/LoginPage'))
+const DashboardPage     = lazy(() => import('@/pages/admin/DashboardPage'))
+const MedecinsPage      = lazy(() => import('@/pages/admin/MedecinsPage'))
+const SpecialitesPage   = lazy(() => import('@/pages/admin/SpecialitesPage'))
+const ServicesPageAdmin  = lazy(() => import('@/pages/admin/ServicesPage'))
+const AssurancesPageAdmin = lazy(() => import('@/pages/admin/AssurancesPage'))
+const ContactsPage      = lazy(() => import('@/pages/admin/ContactsPage'))
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 30000 } },
 })
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
 
 function Spinner() {
   return (
@@ -37,10 +48,33 @@ function Spinner() {
   )
 }
 
+// ── Guards ────────────────────────────────────────────────────────────────────
+
+/**
+ * Attend la fin du chargement avant de décider.
+ * Sans ça, ProtectedRoute redirige vers /admin/login avant que
+ * les setState() du login() soient appliqués.
+ */
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) return <Spinner />
+
   return isAuthenticated ? <>{children}</> : <Navigate to="/admin/login" replace />
 }
+
+/**
+ * Empêche un admin déjà connecté d'accéder à la page login.
+ */
+function GuestRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, loading } = useAuth()
+
+  if (loading) return <Spinner />
+
+  return isAuthenticated ? <Navigate to="/admin/" replace /> : <>{children}</>
+}
+
+// ── Layouts ───────────────────────────────────────────────────────────────────
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -54,12 +88,73 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
   )
 }
 
+// ── Admin app ─────────────────────────────────────────────────────────────────
+
+function AdminApp() {
+  const location = useLocation()
+  const [currentPage, setCurrentPage] = useState(() => {
+    const path = location.pathname.replace('/admin/', '').replace('/admin', '')
+    return path || 'dashboard'
+  })
+  const [unreadCount, setUnreadCount] = useState(0)
+  const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      contactsApi.stats().then(stats => {
+        setUnreadCount(stats.nouveaux)
+      }).catch(() => {})
+    }
+  }, [isAuthenticated, currentPage])
+
+  // Sync state with URL when location changes
+  useEffect(() => {
+    const path = location.pathname.replace('/admin/', '').replace('/admin', '')
+    const page = path || 'dashboard'
+    if (page !== currentPage) {
+      setCurrentPage(page)
+    }
+  }, [location.pathname])
+
+  const handleNavigate = (page: string) => {
+    setCurrentPage(page)
+    navigate(`/admin/${page === 'dashboard' ? '' : page}`)
+  }
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'dashboard':   return <DashboardPage />
+      case 'medecins':    return <MedecinsPage />
+      case 'specialites': return <SpecialitesPage />
+      case 'services':    return <ServicesPageAdmin />
+      case 'assurances':  return <AssurancesPageAdmin />
+      case 'contacts':    return <ContactsPage onUnreadChange={setUnreadCount} />
+      default:            return <DashboardPage />
+    }
+  }
+
+  return (
+    <AdminLayout
+      page={currentPage}
+      onNavigate={handleNavigate}
+      unreadContacts={unreadCount}
+    >
+      {renderPage()}
+    </AdminLayout>
+  )
+}
+
+// ── Router ────────────────────────────────────────────────────────────────────
+
 function AppRouter() {
   const location = useLocation()
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
+
+        {/* Public routes */}
         <Route path="/"           element={<PublicLayout><HomePage /></PublicLayout>} />
         <Route path="/clinique"   element={<PublicLayout><CliniqueePage /></PublicLayout>} />
         <Route path="/services"   element={<PublicLayout><ServicesPage /></PublicLayout>} />
@@ -67,11 +162,25 @@ function AppRouter() {
         <Route path="/medecins"   element={<PublicLayout><DoctorsPage /></PublicLayout>} />
         <Route path="/contact"    element={<PublicLayout><ContactPage /></PublicLayout>} />
 
-        {/* Admin */}
-        <Route path="/admin/login" element={<Suspense fallback={<Spinner />}><AdminLogin /></Suspense>} />
-        <Route path="/admin"       element={<ProtectedRoute><Suspense fallback={<Spinner />}><AdminDashboard /></Suspense></ProtectedRoute>} />
-        <Route path="/admin/*"     element={<ProtectedRoute><Suspense fallback={<Spinner />}><AdminDashboard /></Suspense></ProtectedRoute>} />
+        {/* Login — redirige vers /admin/ si déjà connecté */}
+        <Route path="/admin/login" element={
+          <GuestRoute>
+            <Suspense fallback={<Spinner />}>
+              <AdminLogin />
+            </Suspense>
+          </GuestRoute>
+        } />
 
+        {/* Admin — protégé */}
+        <Route path="/admin/*" element={
+          <ProtectedRoute>
+            <Suspense fallback={<Spinner />}>
+              <AdminApp />
+            </Suspense>
+          </ProtectedRoute>
+        } />
+
+        {/* 404 */}
         <Route path="*" element={
           <PublicLayout>
             <div className="min-h-[60vh] flex items-center justify-center text-center px-7">
@@ -87,10 +196,13 @@ function AppRouter() {
             </div>
           </PublicLayout>
         } />
+
       </Routes>
     </AnimatePresence>
   )
 }
+
+// ── Root ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
   return (

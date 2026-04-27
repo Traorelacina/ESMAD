@@ -3,11 +3,10 @@ import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import {
-  ChevronLeft, ChevronRight,
   Stethoscope, Baby, FlaskConical, Search, Home as HomeIcon, HeartPulse,
   Clock, Users, Shield, Award,
 } from 'lucide-react'
-
+import { assurancesApi, type Assurance } from '@/api/client'
 
 // Imports des images pour les offres
 import consultationImg from '@/assets/Consultationgénérale.jpeg'
@@ -17,9 +16,10 @@ import echographieImg from '@/assets/Echo.jpeg'
 import materniteImg from '@/assets/maternité.jpeg'
 import urgencesImg from '@/assets/urgence.jpeg'
 
-// Imports des images pour les slides 1 et 2 (images avec texte déjà intégré)
+// Imports des images pour les slides
 import slide1Image from '@/assets/Slide.jpeg'
 import slide2Image from '@/assets/Slide2.jpeg'
+import slide3Image from '@/assets/Slide3.jpeg'
 
 // ─── STYLES GLOBAUX ───────────────────────────────────────────────────────────
 ;(function injectStyles() {
@@ -27,11 +27,14 @@ import slide2Image from '@/assets/Slide2.jpeg'
   const el = document.createElement('style')
   el.id = 'esmad-home-styles'
   el.textContent = `
-    @keyframes esmad-ticker {
+    @keyframes esmad-ticker-rtl {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
-    .esmad-ticker { animation: esmad-ticker 32s linear infinite; }
+    .esmad-ticker {
+      animation: esmad-ticker-rtl 6s linear infinite;
+      will-change: transform;
+    }
     .esmad-ticker:hover { animation-play-state: paused; }
 
     @media (max-width: 900px) {
@@ -48,15 +51,9 @@ import slide2Image from '@/assets/Slide2.jpeg'
 
 // ─── DONNÉES SLIDER ───────────────────────────────────────────────────────────
 const SLIDES = [
-  {
-    image: slide1Image,     
-    hasContent: false,      
-  },
-  {
-    image: slide2Image,    
-    hasContent: false,      
-  },
-
+  { image: slide1Image, hasContent: false },
+  { image: slide2Image, hasContent: false },
+  { image: slide3Image, hasContent: false },
 ]
 
 // ─── SLIDER PRINCIPAL ─────────────────────────────────────────────────────────
@@ -65,27 +62,19 @@ function MainSlider() {
   const timerRef = useRef<ReturnType<typeof setInterval>>(null)
 
   const startTimer = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current)
-    }
+    if (timerRef.current) clearInterval(timerRef.current)
     timerRef.current = setInterval(() => setCur((s) => (s + 1) % SLIDES.length), 6500)
   }
 
-  useEffect(() => { 
-    startTimer() 
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current)
-      }
-    }
+  useEffect(() => {
+    startTimer()
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [])
 
   const slide = SLIDES[cur]
 
   return (
     <section style={{ position: 'relative', height: '100vh', minHeight: 580, overflow: 'hidden', background: '#060D1A' }}>
-
-      {/* Image avec fondu - fond flouté pour éliminer les bandes noires */}
       <AnimatePresence mode="wait">
         <motion.div
           key={cur}
@@ -95,7 +84,6 @@ function MainSlider() {
           transition={{ duration: 0.8, ease: 'easeInOut' }}
           style={{ position: 'absolute', inset: 0 }}
         >
-          {/* Fond flouté : même image agrandie et floutée — plus aucune bande noire */}
           <div
             style={{
               position: 'absolute', inset: 0,
@@ -106,45 +94,33 @@ function MainSlider() {
               transform: 'scale(1.08)',
             }}
           />
-          {/* Image principale nette, proportions préservées */}
           <img
             src={slide.image}
             alt={`Slide ${cur + 1}`}
             style={{
               position: 'absolute', inset: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'contain',
-              objectPosition: 'center',
-              display: 'block',
+              width: '100%', height: '100%',
+              objectFit: 'contain', objectPosition: 'center', display: 'block',
             }}
           />
         </motion.div>
       </AnimatePresence>
 
-      {/* Overlay dégradé - seulement pour le slide avec contenu texte */}
       {slide.hasContent && (
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(6,13,26,0.6) 35%, rgba(6,13,26,0.25) 100%)', zIndex: 2 }} />
       )}
 
-      
-
-      {/* Indicateurs */}
       <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 20, display: 'flex', gap: 12 }}>
         {SLIDES.map((_, i) => (
           <button
             key={i}
             onClick={() => { setCur(i); startTimer() }}
             aria-label={`Slide ${i + 1}`}
-            style={{ 
-              width: i === cur ? 40 : 10, 
-              height: 10, 
-              borderRadius: 5, 
-              border: 'none', 
-              cursor: 'pointer', 
-              background: i === cur ? '#8BC34A' : 'rgba(255,255,255,0.5)', 
-              padding: 0, 
-              transition: 'all 0.3s ease',
+            style={{
+              width: i === cur ? 40 : 10, height: 10, borderRadius: 5,
+              border: 'none', cursor: 'pointer',
+              background: i === cur ? '#8BC34A' : 'rgba(255,255,255,0.5)',
+              padding: 0, transition: 'all 0.3s ease',
               boxShadow: i === cur ? '0 0 8px rgba(139,195,74,0.5)' : 'none',
             }}
           />
@@ -156,10 +132,10 @@ function MainSlider() {
 
 // ─── STATS ────────────────────────────────────────────────────────────────────
 const STATS_DATA = [
-  { icon: Award,      value: '+10 ans',  label: "d'expérience",         color: '#1565C0', bg: '#EFF6FF' },
-  { icon: Users,      value: '+50',      label: 'médecins qualifiés',    color: '#7CB342', bg: '#F1F8E9' },
-  { icon: HeartPulse, value: '+5 000',   label: 'patients satisfaits',   color: '#D4A843', bg: '#FFF8E1' },
-  { icon: Clock,      value: '24h/7j',   label: 'urgences',              color: '#C62828', bg: '#FFEBEE' },
+  { icon: Award,      value: '+10 ans', label: "d'expérience",       color: '#1565C0', bg: '#EFF6FF' },
+  { icon: Users,      value: '+50',     label: 'médecins qualifiés', color: '#7CB342', bg: '#F1F8E9' },
+  { icon: HeartPulse, value: '+5 000',  label: 'patients satisfaits',color: '#D4A843', bg: '#FFF8E1' },
+  { icon: Clock,      value: '24h/7j',  label: 'urgences',           color: '#C62828', bg: '#FFEBEE' },
 ]
 
 function StatsSection() {
@@ -193,42 +169,12 @@ function StatsSection() {
 
 // ─── OFFRES DE SOINS ──────────────────────────────────────────────────────────
 const OFFRES = [
-  {
-    icon: Stethoscope, color: '#2563EB', bg: '#EFF6FF',
-    image: consultationImg,
-    title: 'Consultation Médicale',
-    desc: 'Consultations générales et spécialisées assurées par des professionnels qualifiés pour un diagnostic et un suivi de qualité.',
-  },
-  {
-    icon: HomeIcon, color: '#16A34A', bg: '#F0FDF4',
-    image: hospitalisationImg,
-    title: 'Hospitalisation',
-    desc: 'Chambres confortables avec surveillance médicale continue et personnel soignant disponible en permanence pour votre bien-être.',
-  },
-  {
-    icon: FlaskConical, color: '#D97706', bg: '#FFFBEB',
-    image: laboratoireImg,
-    title: "Laboratoire d'Analyses",
-    desc: 'Analyses biologiques complètes — hématologie, biochimie, sérologie — pour un diagnostic précis avec des résultats rapides.',
-  },
-  {
-    icon: Search, color: '#DB2777', bg: '#FDF2F8',
-    image: echographieImg,
-    title: 'Échographie',
-    desc: 'Imagerie médicale moderne par ultrasons pour examens abdominaux, obstétricaux et pelviens avec compte rendu immédiat.',
-  },
-  {
-    icon: Baby, color: '#059669', bg: '#ECFDF5',
-    image: materniteImg,
-    title: 'Maternité',
-    desc: 'Suivi prénatal, accouchement et soins postnataux assurés par une équipe de sages-femmes et gynécologues expérimentés.',
-  },
-  {
-    icon: HeartPulse, color: '#DC2626', bg: '#FEF2F2',
-    image: urgencesImg,
-    title: 'Urgences 24h / 7j',
-    desc: 'Équipe médicale disponible à toute heure pour les situations urgentes. Prise en charge immédiate et professionnelle.',
-  },
+  { icon: Stethoscope, color: '#2563EB', bg: '#EFF6FF', image: consultationImg, title: 'Consultation Médicale', desc: 'Consultations générales et spécialisées assurées par des professionnels qualifiés pour un diagnostic et un suivi de qualité.' },
+  { icon: HomeIcon,    color: '#16A34A', bg: '#F0FDF4', image: hospitalisationImg, title: 'Hospitalisation', desc: 'Chambres confortables avec surveillance médicale continue et personnel soignant disponible en permanence pour votre bien-être.' },
+  { icon: FlaskConical,color: '#D97706', bg: '#FFFBEB', image: laboratoireImg, title: "Laboratoire d'Analyses", desc: 'Analyses biologiques complètes — hématologie, biochimie, sérologie — pour un diagnostic précis avec des résultats rapides.' },
+  { icon: Search,      color: '#DB2777', bg: '#FDF2F8', image: echographieImg, title: 'Échographie', desc: 'Imagerie médicale moderne par ultrasons pour examens abdominaux, obstétricaux et pelviens avec compte rendu immédiat.' },
+  { icon: Baby,        color: '#059669', bg: '#ECFDF5', image: materniteImg, title: 'Maternité', desc: 'Suivi prénatal, accouchement et soins postnataux assurés par une équipe de sages-femmes et gynécologues expérimentés.' },
+  { icon: HeartPulse,  color: '#DC2626', bg: '#FEF2F2', image: urgencesImg, title: 'Urgences 24h / 7j', desc: 'Équipe médicale disponible à toute heure pour les situations urgentes. Prise en charge immédiate et professionnelle.' },
 ]
 
 function OffresSection() {
@@ -245,17 +191,7 @@ function OffresSection() {
           <span style={{ display: 'block', fontSize: 24, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7CB342', marginBottom: 16, fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" }}>
             Nos prestations
           </span>
-          <p style={{ 
-            color: '#6B7280', 
-            fontSize: 'clamp(18px, 5vw, 22px)', 
-            maxWidth: '90%', 
-            margin: '0 auto', 
-            lineHeight: 1.6,
-            whiteSpace: 'nowrap',
-            overflow: 'auto',
-            paddingBottom: '8px',
-            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-          }}>
+          <p style={{ color: '#6B7280', fontSize: 'clamp(18px, 5vw, 22px)', maxWidth: '90%', margin: '0 auto', lineHeight: 1.6, whiteSpace: 'nowrap', overflow: 'auto', paddingBottom: '8px', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>
             ESMAD vous propose une gamme complète de services médicaux pour toute la famille.
           </p>
         </motion.div>
@@ -272,11 +208,7 @@ function OffresSection() {
               onMouseLeave={(e) => { const el = e.currentTarget; el.style.boxShadow = '0 2px 16px rgba(0,0,0,0.06)'; el.style.transform = 'translateY(0)' }}
             >
               <div style={{ height: 210, overflow: 'hidden', position: 'relative' }}>
-                <img
-                  src={o.image}
-                  alt={o.title}
-                  loading="lazy"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease' }}
+                <img src={o.image} alt={o.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s ease' }}
                   onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.06)' }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
                 />
@@ -287,20 +219,9 @@ function OffresSection() {
                   <div style={{ width: 44, height: 44, borderRadius: 12, background: o.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <o.icon size={22} color={o.color} strokeWidth={1.7} />
                   </div>
-                  <h3 style={{ 
-                    fontSize: 18, 
-                    fontWeight: 700, 
-                    color: '#0A1628', 
-                    lineHeight: 1.3,
-                    fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
-                  }}>{o.title}</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: '#0A1628', lineHeight: 1.3, fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" }}>{o.title}</h3>
                 </div>
-                <p style={{ 
-                  fontSize: 15, 
-                  color: '#6B7280', 
-                  lineHeight: 1.65,
-                  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-                }}>{o.desc}</p>
+                <p style={{ fontSize: 15, color: '#6B7280', lineHeight: 1.65, fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}>{o.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -310,101 +231,187 @@ function OffresSection() {
   )
 }
 
-// ─── ASSURANCES PARTENAIRES ───────────────────────────────────────────────────
-const ASSURANCES_NAMES = [
-  'NSIA Assurances', 'SUNU Group', 'Allianz CI', "AXA Côte d'Ivoire",
-  'CNPS', 'Saham Assurance', 'UAB Assurance', 'Atlantique Assurances',
-  'Colina Assurances', 'GNA Assurances',
-]
+// ─── ASSURANCES STRIP — DYNAMIQUE ─────────────────────────────────────────────
+
+/** Une carte d'assurance dans le ticker */
+function AssuranceTickerCard({ a }: { a: Assurance }) {
+  return (
+    <div
+      style={{
+        flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 12,
+        padding: '0 8px',
+        transition: 'transform 0.2s ease',
+        cursor: 'default',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)' }}
+      onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)' }}
+    >
+      {/* Logo rond — grand, sans contour */}
+      <div
+        style={{
+          width: 130,
+          height: 130,
+          borderRadius: '50%',
+          background: a.bg_color,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          flexShrink: 0,
+        }}
+      >
+        {a.logo ? (
+          <img
+            src={a.logo}
+            alt={a.name}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', display: 'block' }}
+          />
+        ) : (
+          <span
+            style={{
+              fontSize: 36,
+              fontWeight: 800,
+              color: a.color,
+              fontFamily: "'Space Mono', monospace",
+              letterSpacing: '-0.02em',
+            }}
+          >
+            {a.initials}
+          </span>
+        )}
+      </div>
+
+      {/* Nom sous le cercle */}
+      <span
+        style={{
+          fontSize: 13,
+          fontWeight: 700,
+          color: '#374151',
+          textAlign: 'center',
+          lineHeight: 1.3,
+          fontFamily: "'DM Sans', 'Inter', system-ui, sans-serif",
+          maxWidth: 120,
+          display: '-webkit-box',
+          overflow: 'hidden',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+        }}
+      >
+        {a.name}
+      </span>
+    </div>
+  )
+}
+
+/** Skeleton d'une carte dans le ticker */
+function TickerSkeleton() {
+  return (
+    <div style={{
+      flexShrink: 0,
+      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, padding: '0 8px',
+    }}>
+      <div style={{ width: 130, height: 130, borderRadius: '50%', background: '#E9EEF4' }} />
+      <div style={{ width: 90, height: 13, borderRadius: 6, background: '#E9EEF4' }} />
+    </div>
+  )
+}
 
 function AssurancesStrip() {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 })
+  const [assurances, setAssurances] = useState<Assurance[]>([])
+  const [loading, setLoading]       = useState(true)
+  const { ref, inView }             = useInView({ triggerOnce: true, threshold: 0.15 })
+
+  useEffect(() => {
+    assurancesApi
+      .list(new URLSearchParams({ per_page: '100' }).toString())
+      .then(res => setAssurances(res.data.filter(a => a.is_active)))
+      .catch(err => console.error('Erreur chargement assurances:', err))
+      .finally(() => setLoading(false))
+  }, [])
+
+  // Dupliquer pour boucle continue
+  const items = assurances.length > 0 ? [...assurances, ...assurances] : []
+  // Skeletons de remplacement pendant le chargement
+  const skeletonCount = 8
 
   return (
     <section ref={ref} style={{ background: '#F8FAFD', padding: '80px 0', borderTop: '1px solid #E8EDF5' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+
+        {/* En-tête */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           style={{ textAlign: 'center', marginBottom: 48 }}
         >
-          <span style={{ 
-  display: 'block', 
-  fontSize: 24, 
-  fontWeight: 800, 
-  textTransform: 'uppercase', 
-  letterSpacing: '0.2em', 
-  color: '#7CB342', 
-  marginBottom: 16, 
-  fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
-}}>
-  Couverture santé
-</span>
-
-<p style={{ 
-  color: '#6B7280', 
-  fontSize: 'clamp(18px, 5vw, 22px)', 
-  maxWidth: '90%', 
-  margin: '0 auto', 
-  lineHeight: 1.6,
-  whiteSpace: 'nowrap',
-  overflow: 'auto',
-  paddingBottom: '8px',
-  fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-}}>
-  ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles de Côte d'Ivoire.
-</p>
+          <span style={{
+            display: 'block', fontSize: 24, fontWeight: 800, textTransform: 'uppercase',
+            letterSpacing: '0.2em', color: '#7CB342', marginBottom: 16,
+            fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+          }}>
+            Couverture santé
+          </span>
+          <p style={{
+            color: '#6B7280', fontSize: 'clamp(18px, 5vw, 22px)',
+            maxWidth: '90%', margin: '0 auto', lineHeight: 1.6,
+            whiteSpace: 'nowrap', overflow: 'auto', paddingBottom: '8px',
+            fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+          }}>
+            ESMAD est conventionné avec les principales compagnies d'assurance et mutuelles de Côte d'Ivoire.
+          </p>
         </motion.div>
 
-        <div style={{ overflow: 'hidden', position: 'relative', marginBottom: 36 }}>
-          <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 72, background: 'linear-gradient(to right, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
-          <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 72, background: 'linear-gradient(to left, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
+        {/* Ticker */}
+        <div style={{ overflow: 'hidden', position: 'relative', marginBottom: 40 }}>
+          {/* Masques dégradés gauche / droite */}
+          <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 100, background: 'linear-gradient(to right, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 100, background: 'linear-gradient(to left, #F8FAFD, transparent)', zIndex: 10, pointerEvents: 'none' }} />
 
-          <div
-            className="esmad-ticker"
-            style={{ display: 'flex', gap: 18, width: 'max-content', padding: '10px 0' }}
-          >
-            {[...ASSURANCES_NAMES, ...ASSURANCES_NAMES].map((name, i) => (
-              <div
-                key={i}
-                style={{ padding: '14px 24px', borderRadius: 12, background: '#fff', border: '1px solid #E5E7EB', fontSize: 15, fontWeight: 600, color: '#374151', whiteSpace: 'nowrap', flexShrink: 0, boxShadow: '0 1px 6px rgba(0,0,0,0.04)', fontFamily: "'Inter', system-ui, -apple-system, sans-serif" }}
-              >
-                {name}
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div style={{ display: 'flex', gap: 40, padding: '16px 0' }}>
+              {Array.from({ length: skeletonCount }).map((_, i) => <TickerSkeleton key={i} />)}
+            </div>
+          ) : (
+            /* 
+              Technique boucle infinie :
+              - items = [...original, ...original]  (doublé)
+              - animation translateX(0) → translateX(-50%)
+              - à -50% le 2e bloc est aligné exactement sur le 1er → saut invisible → repart
+              - résultat : défilement continu de droite à gauche sans coupure
+            */
+            <div
+              className="esmad-ticker"
+              style={{ display: 'flex', gap: 40, width: 'max-content', padding: '16px 0' }}
+            >
+              {items.map((a, i) => (
+                <AssuranceTickerCard key={`${a.id}-${i}`} a={a} />
+              ))}
+            </div>
+          )}
         </div>
 
+        {/* CTA */}
         <div style={{ textAlign: 'center' }}>
-         <Link
-  to="/assurances"
-  style={{ 
-    display: 'inline-flex', 
-    alignItems: 'center', 
-    gap: 8, 
-    padding: '14px 36px', 
-    borderRadius: 12, 
-    fontSize: 15, 
-    fontWeight: 700, 
-    color: '#7CB342', 
-    border: '2px solid #7CB342', 
-    textDecoration: 'none', 
-    background: '#fff', 
-    transition: 'all 0.2s ease', 
-    fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif" 
-  }}
-  onMouseEnter={(e) => { 
-    e.currentTarget.style.background = '#F1F8E9'
-    e.currentTarget.style.color = '#7CB342'
-  }}
-  onMouseLeave={(e) => { 
-    e.currentTarget.style.background = '#fff'
-    e.currentTarget.style.color = '#7CB342'
-  }}
->
-  Consulter la liste complète
-</Link>
+          <Link
+            to="/assurances"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '14px 36px', borderRadius: 12, fontSize: 15, fontWeight: 700,
+              color: '#7CB342', border: '2px solid #7CB342', textDecoration: 'none',
+              background: '#fff', transition: 'all 0.2s ease',
+              fontFamily: "'Inter', 'Poppins', system-ui, -apple-system, sans-serif",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#F1F8E9' }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#fff' }}
+          >
+            <Shield size={16} />
+            Consulter la liste complète
+          </Link>
         </div>
       </div>
     </section>
