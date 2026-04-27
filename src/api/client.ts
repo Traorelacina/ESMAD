@@ -59,12 +59,13 @@ export class ApiError extends Error {
   }
 }
 
-const get      = <T>(path: string)                     => request<T>('GET',    path)
-const post     = <T>(path: string, body?: unknown)     => request<T>('POST',   path, body)
-const put      = <T>(path: string, body?: unknown)     => request<T>('PUT',    path, body)
-const del      = <T>(path: string)                     => request<T>('DELETE', path)
-const postForm = <T>(path: string, form: FormData)     => request<T>('POST',   path, form, true)
-const putForm  = <T>(path: string, form: FormData)     => request<T>('PUT',    path, form, true)
+const get = <T>(path: string) => request<T>('GET', path)
+const post = <T>(path: string, body?: unknown) => request<T>('POST', path, body)
+const put = <T>(path: string, body?: unknown) => request<T>('PUT', path, body)
+const del = <T>(path: string) => request<T>('DELETE', path)
+const patch = <T>(path: string, body?: unknown) => request<T>('PATCH', path, body) // AJOUTÉ pour les requêtes PATCH
+const postForm = <T>(path: string, form: FormData) => request<T>('POST', path, form, true)
+const putForm = <T>(path: string, form: FormData) => request<T>('PUT', path, form, true)
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -84,7 +85,7 @@ export interface Assurance {
   name: string
   slug: string
   logo: string | null
-  logo_url?: string | null  // ← AJOUTÉ : propriété manquante
+  logo_url?: string | null
   initials: string
   color: string
   bg_color: string
@@ -121,7 +122,6 @@ export interface Medecin {
   initials: string
   specialite: Specialite
   specialite_id: number
-  // Toujours une URL absolue (http://...) grâce à MedecinResource
   photo: string | null
   color: string
   bg_color: string
@@ -129,7 +129,6 @@ export interface Medecin {
   phone: string | null
   email: string | null
   is_active: boolean
-  // FIX : champ ajouté — mappé depuis is_available dans MedecinResource
   disponible: boolean
   sort_order: number
   disponibilites?: Disponibilite[]
@@ -180,7 +179,7 @@ export const authApi = {
   login: (email: string, password: string) =>
     post<{ token: string; admin: Admin; message: string }>('/admin/login', { email, password }),
   logout: () => post<{ message: string }>('/admin/logout'),
-  me: () => get<{ data?: Admin } & Admin>('/admin/me'),
+  me: () => get<Admin>('/admin/me'), // Simplifié - la réponse est directement l'admin
   updateProfile: (form: FormData) => postForm<{ message: string; admin: Admin }>('/admin/profile', form),
   changePassword: (data: { current_password: string; password: string; password_confirmation: string }) =>
     put<{ message: string }>('/admin/password', data),
@@ -192,7 +191,7 @@ export const adminsApi = {
   list: () => get<{ data: Admin[] }>('/admin/admins'),
   create: (form: FormData) => postForm<{ message: string; data: Admin }>('/admin/admins', form),
   update: (id: number, form: FormData) => postForm<{ message: string; data: Admin }>(`/admin/admins/${id}`, form),
-  toggle: (id: number) => request<{ message: string; is_active: boolean }>('PATCH', `/admin/admins/${id}/toggle`),
+  toggle: (id: number) => patch<{ message: string; is_active: boolean }>(`/admin/admins/${id}/toggle`), // Utilise patch au lieu de request
   delete: (id: number) => del<{ message: string }>(`/admin/admins/${id}`),
 }
 
@@ -202,7 +201,7 @@ export const assurancesApi = {
   list: (params?: string) => get<PaginatedResponse<Assurance>>(`/admin/assurances${params ? '?' + params : ''}`),
   create: (form: FormData) => postForm<{ message: string; data: Assurance }>('/admin/assurances', form),
   update: (id: number, form: FormData) => postForm<{ message: string; data: Assurance }>(`/admin/assurances/${id}`, form),
-  toggle: (id: number) => request<{ message: string; is_active: boolean }>('PATCH', `/admin/assurances/${id}/toggle`),
+  toggle: (id: number) => patch<{ message: string; is_active: boolean }>(`/admin/assurances/${id}/toggle`),
   delete: (id: number) => del<{ message: string }>(`/admin/assurances/${id}`),
   reorder: (ids: number[]) => post<{ message: string }>('/admin/assurances/reorder', { ids }),
 }
@@ -237,7 +236,7 @@ export const medecinsApi = {
   list: (params?: string) => get<PaginatedResponse<Medecin>>(`/admin/medecins${params ? '?' + params : ''}`),
   create: (form: FormData) => postForm<{ message: string; data: Medecin }>('/admin/medecins', form),
   update: (id: number, form: FormData) => postForm<{ message: string; data: Medecin }>(`/admin/medecins/${id}`, form),
-  toggle: (id: number) => request<{ message: string; is_active: boolean }>('PATCH', `/admin/medecins/${id}/toggle`),
+  toggle: (id: number) => patch<{ message: string; is_active: boolean }>(`/admin/medecins/${id}/toggle`),
   delete: (id: number) => del<{ message: string }>(`/admin/medecins/${id}`),
   reorder: (ids: number[]) => post<{ message: string }>('/admin/medecins/reorder', { ids }),
 }
@@ -261,18 +260,20 @@ export const contactsApi = {
   show: (id: number) => get<Contact>(`/admin/contacts/${id}`),
   stats: () => get<ContactStats>('/admin/contacts/stats'),
   updateStatus: (id: number, status: string, reponse?: string) =>
-    request<{ message: string; data: Contact }>('PATCH', `/admin/contacts/${id}/status`, { status, reponse }),
+    patch<{ message: string; data: Contact }>(`/admin/contacts/${id}/status`, { status, reponse }),
   delete: (id: number) => del<{ message: string }>(`/admin/contacts/${id}`),
 }
 
 // ── EXPORT PAR DÉFAUT (AJOUTÉ) ──────────────────────────────────────────────────
 // Ceci permet d'importer avec: import api from './client'
-export default {
+const api = {
   get,
   post,
   put,
+  patch,    // AJOUTÉ
   delete: del,
   postForm,
   putForm,
-  request,
 }
+
+export default api
