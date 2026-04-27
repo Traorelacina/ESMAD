@@ -9,7 +9,7 @@ import TopBar from '@/components/layout/TopBar'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
-import AdminLayout from '@/components/admin/AdminLayout'
+import AdminLayout from '@/pages/admin/AdminLayout'
 import { contactsApi } from '@/api/client'
 
 import HomePage from '@/pages/HomePage'
