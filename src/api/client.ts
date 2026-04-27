@@ -84,6 +84,7 @@ export interface Assurance {
   name: string
   slug: string
   logo: string | null
+  logo_url?: string | null  // ← AJOUTÉ : propriété manquante
   initials: string
   color: string
   bg_color: string
@@ -262,4 +263,16 @@ export const contactsApi = {
   updateStatus: (id: number, status: string, reponse?: string) =>
     request<{ message: string; data: Contact }>('PATCH', `/admin/contacts/${id}/status`, { status, reponse }),
   delete: (id: number) => del<{ message: string }>(`/admin/contacts/${id}`),
+}
+
+// ── EXPORT PAR DÉFAUT (AJOUTÉ) ──────────────────────────────────────────────────
+// Ceci permet d'importer avec: import api from './client'
+export default {
+  get,
+  post,
+  put,
+  delete: del,
+  postForm,
+  putForm,
+  request,
 }
